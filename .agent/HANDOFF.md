@@ -1,7 +1,7 @@
 # Coding Security Protocol — ortak devir
-Güncelleme: 2026-10-09 15:52 Europe/Istanbul
-Aktif ajan: Codex
-Durum: skill/bağlantı/README tamam; commit ve GitHub push hazırlanıyor
+Güncelleme: 2026-10-09 15:55 Europe/Istanbul
+Aktif ajan: yok; son çalışma Codex
+Durum: skill/bağlantı/README tamam; implementation GitHub push ve hash eşliği doğrulandı
 Hedef ajan/model: başka ajan/model kullanılmadı
 
 ## Kullanıcı hedefi ve yetki sınırları
@@ -11,7 +11,7 @@ Serena/MCP-RAG eksiklerini tamamla; üç ajan bağlantıları; detaylı skill; R
 Python Serena fresh process sembolleri PASS. Zero-Waste gerçek indeks/sym_resolve/11 satır okuma PASS. Codex/Claude/Antigravity kayıtlı MCP entry fresh stdio çağrıları ve Serena diğer client contexts PASS. Global skill tam kopyaları byte eş. Canonical skill 4 koşullu ref ile detaylı; Claude wrapper ve AGENTS/CLAUDE/GEMINI yönlendirmesi. README.md/README.tr.md tam kullanım/token/sınırlar içeriyor.
 
 ## Git durumu ve değişen dosyalar
-Başlangıç HEAD 5212eb3. Önceki README değişiklikleri korunup bu task'a dahil edildi. Yeni skill/guidance, AGENTS adoption, gitignore, READMEs, yerel doğrulama/devir kanıtları commit adayı. Core/schema/policy/config/MVP/SECURITY_AGENT/dependency aynı. Machine settings/backups/index/raw logs ignored veya repo dışı.
+Başlangıç HEAD 5212eb3; yayınlanan skill/README implementation 18f6c1f44c28131a1d78f202e21cceac9d11f79d. Uzak main ile gerçek eşlik ve temiz tree doğrulandı; bu kapanış belgesi ayrı docs commit ile aynı main üzerine gönderilir. Final docs hash kendine yazılmaz, git log/ls-remote ile ölçülür.  Önceki README değişiklikleri korunup bu task'a dahil edildi. Yeni skill/guidance, AGENTS adoption, gitignore, READMEs, yerel doğrulama/devir kanıtları commit adayı. Core/schema/policy/config/MVP/SECURITY_AGENT/dependency aynı. Machine settings/backups/index/raw logs ignored veya repo dışı.
 
 ## Doğrulama kanıtları
 Fresh 162 test OK/0 (217.410 sn); actual doctor PASS/0 (20261009T125052Z-b1c88480); skill creator 2 validate PASS; 5 client/context MCP query PASS; 3 user skill copies byte-equal; README/ref/UTF-8/diff ve hedefli secret signature check PASS.
@@ -21,13 +21,13 @@ Fresh 162 test OK/0 (217.410 sn); actual doctor PASS/0 (20261009T125052Z-b1c8848
 Canlı 3 app UI discovery/handoff ve native Claude/Antigravity ai-patch köprüleri doğrulanmadı. Otomatik kota/app switching yok. Açık istemci eski MCP cache için refresh/new session gerekebilir. Code tools index sandbox/security evidence değildir. Measured token saving yok; OPEN fixture gate BLOCK bekleniyor.
 
 ## Sıradaki tek işlem
-İncelenen değişiklikleri commit ve GitHub push et; hash/remote eşliğini doğrula.
+Kullanıcı yeni görev verene kadar dur. Açık istemcilerde MCP/skill discovery için refresh/new session gerekebilir; canlı GUI devri ayrı doğrulama kapsamıdır.
 
 ## Arka plan süreçleri ve dış işler
 Full suite ve probe süreçleri bitti; başka ajan/AI/deploy/notification yok.
 
 ## Ortak hafıza bağlantıları ve eşitleme durumu
-Obsidian ana not/günlük/karar/dizin güncellendi; canlı template başlıkları/UTF-8/bağlantılar tekrar okunarak doğrulandı. Push sonrası gerçek hash ile kapanış yapılır.
+Obsidian ana not/günlük/karar/dizin doğrulanmış checkpoint içerir; son docs push sonrası gerçek final hash ile kayıt tekrar güncellenir. Kaynak dosyalar kasaya taşınmaz.
 
 ## Devir geçmişi
 2026-10-09 15:52 Codex — aşağıdaki eski no-commit/no-push kayıtları tarihsel; güncel user commit/push yetkisi bu task'ta verildi.

@@ -68,3 +68,14 @@ FEATURE integration checks and full regression suite passed, with explicit
 unverified GUI/provider limits. Ready for the user-authorized commit/push.
 Publishing result is recorded in the final dated handoff after actual Git checks.
 Raw MCP logs/caches/local configs are excluded; summarized probes remain versioned.
+
+## 2026-10-09 15:55 — GitHub publication measured
+
+Implementation commit: 18f6c1f44c28131a1d78f202e21cceac9d11f79d (19 reviewed files).
+Actual git push origin main succeeded: fc0b201 -> 18f6c1f, including the two
+previously local M3–M6 commits. Actual ls-remote main matched local HEAD and
+working tree was clean immediately after that push. Repository visibility was
+not changed; no deploy or PR was created. This final handoff/evidence closure
+is recorded in a separate docs commit and pushed to the same main branch.
+Final self-referencing docs hash is intentionally read from git log/ls-remote,
+not invented inside its own source. Obsidian receives the measured final hash.
