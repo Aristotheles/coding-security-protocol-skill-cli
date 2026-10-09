@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Coding Security Protocol v1.0
+# Coding Security Protocol v1.0 (Agent Skill + CLI)
 
 **Claude Code, Codex ve Antigravity ile kodlama sırasında kullanılan bir güvenlik protokolü ve ajan skill’i.**
 

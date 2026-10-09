@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Coding Security Protocol v1.0
+# Coding Security Protocol v1.0 (Agent Skill + CLI)
 
 > **Türkçe tam dokümantasyon: [README.tr.md](README.tr.md)** · [English documentation](#english)
 

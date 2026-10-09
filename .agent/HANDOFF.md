@@ -1,4 +1,23 @@
 # Coding Security Protocol — ortak devir
+Güncelleme: 2026-10-09 16:55 Europe/Istanbul
+Aktif ajan: yok; son çalışma Codex
+Durum: iki README sunum başlığı güncellendi; yetkili commit/push adımı
+
+## Kullanıcı hedefi ve yetki sınırları
+Onaylanan sunum başlığı: Coding Security Protocol v1.0 (Agent Skill + CLI). Ana proje adı ve repo adresi aynı. README başlıkları ve ortak kayıt dışında değişiklik yok; commit/push yetkisi önceki talimatla sürüyor.
+
+## Güncel durum ve doğrulama kanıtları
+README.md ve README.tr.md yalnız H1 başlığı değişti; git HEAD karşılaştırması exact title-only farkı ve UTF-8 PASS. git diff --check uygulanır. FAST dokümantasyon kontrolü; tüm linkler ve diğer içerik exact karşılaştırmayla aynı. Full suite/doctor NOT RUN: kod/config/policy/skill değişmedi. Önceki tanım commit 534496d uzak main ile eşit/clean olarak doğrulanmıştı; eski hazırlanıyor kaydı tarihsel.
+
+## Git, kalan işler ve sıradaki tek işlem
+Başlangıç HEAD 534496d; tree temiz. İki README ve bu kayıt commit/push edilip uzak main eşliği ve temiz tree ölçülür; final hash Obsidian’da kayıt edilir. Sonra dur, yeni kullanıcı görevini bekle.
+
+## Arka plan ve ortak hafıza
+Başka ajan/AI/deploy yok. Obsidian canlı şablonları ve ilgili kayıtlar okundu; yayın kapanışı ana not/günlük/karar/dizine yazılıp geri okunur.
+
+---
+
+# Coding Security Protocol — ortak devir
 Güncelleme: 2026-10-09 16:53 Europe/Istanbul
 Aktif ajan: yok; son çalışma Codex
 Durum: proje tanımı düzeltildi; README commit/push hazırlanıyor
