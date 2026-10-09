@@ -1,0 +1,6 @@
+rules:
+  - id: csp-python-eval
+    message: Untrusted input passed to eval can execute arbitrary Python code.
+    severity: ERROR
+    languages: [python]
+    pattern: eval(...)

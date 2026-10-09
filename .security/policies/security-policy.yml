@@ -1,0 +1,40 @@
+version: 1
+# Definitions from MVP.md; evaluation is implemented in M3, not by doctor.
+policies:
+  - id: POL-001
+    name: No open critical on release
+    events: [release]
+    severities: [CRITICAL]
+    statuses: [OPEN, REOPENED]
+    action: BLOCK
+  - id: POL-002
+    name: AI patch must close the finding on rescan
+    events: [merge]
+    action: BLOCK
+  - id: POL-003
+    name: New dependency with lockfile change requires human review
+    action: REVIEW_REQUIRED
+    sbom_diff_when_enabled: true
+  - id: POL-004
+    name: No configured coverage regression
+    action: BLOCK
+  - id: POL-005
+    name: Secret zero tolerance and required rotation confirmation
+    events: [merge, release]
+    action: BLOCK
+  - id: POL-006
+    name: Security-critical code requires human review
+    paths: ['**/auth/**', '**/middleware/**', '**/permissions/**', '**/session/**', '**/crypto/**']
+    action: REVIEW_REQUIRED
+  - id: POL-007
+    name: Stale high-risk finding escalation
+    severities: [HIGH, CRITICAL]
+    statuses: [OPEN, REOPENED]
+    action: WARNING
+    stages:
+      - days: 30
+        targets: [security_report]
+      - days: 60
+        targets: [finding_owner, responsible_team]
+      - days: 90
+        targets: [finding_owner, responsible_team, security_lead]

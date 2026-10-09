@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Coding Security Protocol finding",
+  "type": "object",
+  "required": ["id", "fingerprint", "fingerprint_version", "category", "severity", "status", "location", "first_seen", "last_seen", "regression", "history"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^SEC-[0-9]{4,}$"},
+    "fingerprint": {"type": "string", "minLength": 1},
+    "fingerprint_version": {"type": "integer", "minimum": 1},
+    "category": {"type": "string", "minLength": 1},
+    "severity": {"enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"]},
+    "status": {"enum": ["OPEN", "PATCH_PROPOSED", "VERIFYING", "CLOSED", "REOPENED", "ACCEPTED_RISK"]},
+    "location": {
+      "type": "object",
+      "required": ["path"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "line": {"type": "integer", "minimum": 1}
+      }
+    },
+    "first_seen": {"$ref": "#/$defs/utc_timestamp"},
+    "last_seen": {"$ref": "#/$defs/utc_timestamp"},
+    "regression": {"type": "boolean"},
+    "owner": {"type": ["string", "null"]},
+    "responsible_team": {"type": ["string", "null"]},
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["timestamp", "status"],
+        "properties": {
+          "timestamp": {"$ref": "#/$defs/utc_timestamp"},
+          "status": {"$ref": "#/properties/status"}
+        }
+      }
+    },
+    "remediation": {
+      "type": "object",
+      "required": ["rotation_required", "rotation_confirmed", "confirmed_at", "confirmed_by"],
+      "properties": {
+        "rotation_required": {"type": "boolean"},
+        "rotation_confirmed": {"type": "boolean"},
+        "confirmed_at": {"anyOf": [{"$ref": "#/$defs/utc_timestamp"}, {"type": "null"}]},
+        "confirmed_by": {"type": ["string", "null"]}
+      }
+    }
+  },
+  "$defs": {
+    "utc_timestamp": {"type": "string", "format": "date-time", "pattern": "Z$"}
+  }
+}

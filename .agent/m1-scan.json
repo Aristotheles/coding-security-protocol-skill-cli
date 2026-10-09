@@ -1,0 +1,124 @@
+{
+  "project": "Coding Security Protocol",
+  "command": "scan",
+  "run_id": "20261009T082100Z-56254a39958c4750a1b28ff2a3bab879",
+  "started_at": "2026-10-09T08:21:00Z",
+  "scanners": [
+    {
+      "tool": "semgrep",
+      "started_at": "2026-10-09T08:21:00Z",
+      "profile": {
+        "executable": "semgrep",
+        "enabled": true,
+        "mandatory": true,
+        "argv": [
+          "scan",
+          "--config",
+          ".security/rules/python-security.yml",
+          "--sarif",
+          "--metrics",
+          "off",
+          "--disable-version-check",
+          "--no-git-ignore",
+          "{target}"
+        ],
+        "timeout_seconds": 120,
+        "output_format": "sarif",
+        "severity_mapping": {
+          "ERROR": "HIGH",
+          "WARNING": "MEDIUM",
+          "INFO": "INFO"
+        }
+      },
+      "state": "FINDINGS",
+      "raw_reference": ".security\\raw\\semgrep\\20261009T082100Z-56254a39958c4750a1b28ff2a3bab879.sarif",
+      "stderr_reference": ".security\\raw\\semgrep\\20261009T082100Z-56254a39958c4750a1b28ff2a3bab879.stderr.log",
+      "version": "1.180.0",
+      "version_exit_code": 0,
+      "version_timeout": false,
+      "version_reference": ".security\\raw\\semgrep\\20261009T082100Z-56254a39958c4750a1b28ff2a3bab879.version.stdout",
+      "argv": [
+        "<USER_HOME>\\.local\\bin\\semgrep.EXE",
+        "scan",
+        "--config",
+        ".security/rules/python-security.yml",
+        "--sarif",
+        "--metrics",
+        "off",
+        "--disable-version-check",
+        "--no-git-ignore",
+        "C:\\Coding Security Protocol\\tests\\fixtures\\scanner-project"
+      ],
+      "scanner_exit_code": 0,
+      "timed_out": false,
+      "findings_count": 1,
+      "finished_at": "2026-10-09T08:21:06Z"
+    },
+    {
+      "tool": "trivy",
+      "started_at": "2026-10-09T08:21:06Z",
+      "profile": {
+        "executable": ".tools/trivy/trivy.exe",
+        "enabled": true,
+        "mandatory": true,
+        "argv": [
+          "fs",
+          "--scanners",
+          "secret",
+          "--secret-config",
+          ".security/rules/trivy-secret.yml",
+          "--format",
+          "sarif",
+          "--disable-telemetry",
+          "--skip-version-check",
+          "--skip-dirs",
+          ".tools",
+          "--skip-dirs",
+          ".security",
+          "{target}"
+        ],
+        "timeout_seconds": 120,
+        "output_format": "sarif",
+        "severity_mapping": {
+          "CRITICAL": "CRITICAL",
+          "HIGH": "HIGH",
+          "MEDIUM": "MEDIUM",
+          "LOW": "LOW",
+          "UNKNOWN": "INFO"
+        }
+      },
+      "state": "FINDINGS",
+      "raw_reference": ".security\\raw\\trivy\\20261009T082100Z-56254a39958c4750a1b28ff2a3bab879.sarif",
+      "stderr_reference": ".security\\raw\\trivy\\20261009T082100Z-56254a39958c4750a1b28ff2a3bab879.stderr.log",
+      "version": "Version: 0.75.0",
+      "version_exit_code": 0,
+      "version_timeout": false,
+      "version_reference": ".security\\raw\\trivy\\20261009T082100Z-56254a39958c4750a1b28ff2a3bab879.version.stdout",
+      "argv": [
+        "C:\\Coding Security Protocol\\.tools\\trivy\\trivy.exe",
+        "fs",
+        "--scanners",
+        "secret",
+        "--secret-config",
+        ".security/rules/trivy-secret.yml",
+        "--format",
+        "sarif",
+        "--disable-telemetry",
+        "--skip-version-check",
+        "--skip-dirs",
+        ".tools",
+        "--skip-dirs",
+        ".security",
+        "C:\\Coding Security Protocol\\tests\\fixtures\\scanner-project"
+      ],
+      "scanner_exit_code": 0,
+      "timed_out": false,
+      "findings_count": 1,
+      "finished_at": "2026-10-09T08:21:06Z"
+    }
+  ],
+  "exit_code": 0,
+  "result": "SCAN_COMPLETED",
+  "finished_at": "2026-10-09T08:21:06Z",
+  "report_reference": ".security\\reports\\20261009T082100Z-56254a39958c4750a1b28ff2a3bab879-scan-report.json"
+}

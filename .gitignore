@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+.venv/
+.tools/
+.security/security.db
+.security/security.db-*
+.security/.store.lock
+.security/.index-*
+.security/raw/semgrep/*
+!.security/raw/semgrep/.gitkeep
+.security/raw/trivy/*
+!.security/raw/trivy/.gitkeep
+.security/sarif/*
+!.security/sarif/.gitkeep
+.security/evidence/*
+!.security/evidence/.gitkeep
+.security/reports/*
+!.security/reports/.gitkeep
+# Canonical .security/findings/*.json is intentionally not ignored.
+
+# Local agent configuration and incomplete development snapshots.
+.serena/
+.agent/m2-debug-initial/

@@ -1,0 +1,4 @@
+# Standard library has no YAML parser or JSON Schema validator.
+# Used only for safe config parsing and standards-based schema validation.
+PyYAML==6.0.3
+jsonschema==4.26.0

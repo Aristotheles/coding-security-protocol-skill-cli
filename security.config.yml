@@ -1,0 +1,23 @@
+version: 1
+# M1 local profiles. No hosted scanner configuration or AI calls.
+scanners:
+  semgrep:
+    executable: semgrep
+    enabled: true
+    mandatory: true
+    argv: [scan, --config, .security/rules/python-security.yml, --sarif, --metrics, 'off', --disable-version-check, --no-git-ignore, '{target}']
+    timeout_seconds: 120
+    output_format: sarif
+    severity_mapping: {ERROR: HIGH, WARNING: MEDIUM, INFO: INFO}
+  trivy:
+    executable: .tools/trivy/trivy.exe
+    enabled: true
+    mandatory: true
+    argv: [fs, --scanners, secret, --secret-config, .security/rules/trivy-secret.yml, --format, sarif, --disable-telemetry, --skip-version-check, --skip-dirs, .tools, --skip-dirs, .security, --skip-dirs, __pycache__, '{target}']
+    timeout_seconds: 120
+    output_format: sarif
+    severity_mapping: {CRITICAL: CRITICAL, HIGH: HIGH, MEDIUM: MEDIUM, LOW: LOW, UNKNOWN: INFO}
+ai:
+  providers: []
+runtime_verify:
+  mode: not_applicable

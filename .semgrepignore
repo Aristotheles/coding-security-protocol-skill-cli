@@ -1,0 +1,9 @@
+# Explicit project exclusions: test fixtures must remain scannable.
+.git/
+.venv/
+.tools/
+.serena/
+.agent/
+.security/
+__pycache__/
+*.py[cod]
