@@ -1,4 +1,44 @@
 # Coding Security Protocol — ortak devir
+Güncelleme: 2026-10-09 12:03 Europe/Istanbul
+Aktif ajan: yok; son doğrulama: Codex
+Durum: M0–M2 commit ve ilk GitHub push tamamlandı; sonuç kaydı ayrı docs commit ile gönderilir
+Hedef ajan/model: belirtilmedi; doğrulama: yapılmadı
+
+## Kullanıcı hedefi ve yetki sınırları
+Kullanıcı “şu ana kadar yapılanları commitle ve githuba bas” diyerek Git init, commit ve push çalışmasını yetkilendirdi. Repo private oluşturuldu. Yeni milestone, uygulama deploy veya başka ajan çalışması yok.
+
+## Güncel durum ve tamamlananlar
+M0–M2 complete; M3–M6 unchecked. Private repo https://github.com/Aristotheles/coding-security-protocol; branch main, origin/main tracking. İlk implementation commit e9076bacee8f56c2f32921f5aaca66d4ebb13bdf, remote ile eşitliği ölçüldü. Önceki Git yok kayıtları tarihsel.
+
+## Git durumu ve değişen dosyalar
+İlk push ardından git status --short boş. .gitignore yerel Serena/debug klasörlerini dışlar; .semgrepignore test fixture scan kapsamını korur. İlk commit 57 dosya içerir; bu docs kaydı HANDOFF ve GITHUB-PUSH.md içerir. Binary/DB/raw runtime gönderilmedi; canonical JSON/sequence gönderildi.
+
+## Doğrulama kanıtları
+Codex 2026-10-09 12:03 Europe/Istanbul: 76 test OK (64.752 sn), doctor PASS/0, compileall ve staged AST/whitespace PASS. İlk suite 1/76 FAIL: Semgrep Git kökünde tests dışlaması; açık .semgrepignore sonrası full suite OK. Sır imzası kontrolünde 57 dosyada eşleşme yok; kapsamlı güvenlik denetimi iddiası değildir.
+Kanıt: .agent/GITHUB-PUSH.md; önceki milestone kanıtları korunur.
+
+## Kalan işler ve engeller
+Git eksikliği giderildi. Diğer platform/Python sürümleri doğrulanmadı; gerçek closure/policy M3/M4 bekler. Tarihsel fixture bulguları OPEN; sessiz kapanış yok.
+
+## Sıradaki tek işlem
+Yeni kullanıcı talimatıyla yalnız M3 — Policy Engine; başlanmadı.
+
+## Arka plan süreçleri ve dış işler
+Aktif ajan/test/scan yok; uygulama deploy yok. İlk GitHub push gerçek olarak tamamlandı.
+
+## Ortak hafıza bağlantıları ve eşitleme durumu
+Kasa <OBSIDIAN_VAULT>
+Projeler/Coding Security Protocol/Coding Security Protocol.md
+Günlük/2026-10-09 — Coding Security Protocol.md
+Kararlar.md#2026-10-09 — Coding Security Protocol GitHub kaydı
+Ortak kayıtlar bu push çalışmasının sonunda güncellenir ve yeniden okunur.
+
+## Devir geçmişi
+2026-10-09 12:03 Europe/Istanbul — Codex ilk implementation push tamamladı; başka ajan devri yok.
+
+## Önceki kayıt (korundu)
+
+# Coding Security Protocol — ortak devir
 Güncelleme: 2026-10-09 11:59 Europe/Istanbul
 Aktif ajan: yok; son uygulama ve doğrulama: Codex
 Durum: M2 foundation tamamlandı; duruldu
