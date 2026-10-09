@@ -1,8 +1,13 @@
 # Coding Security Protocol — ortak devir
-Güncelleme: 2026-10-09 17:24 Europe/Istanbul
-Aktif ajan: Claude Code (Sonnet 5.5)
-Durum: devralındı; durum ölçüldü, yazma kapsamı bekliyor
+Güncelleme: 2026-10-09 19:35 Europe/Istanbul
+Aktif ajan: Claude Code (Sonnet 5.5); yazmayı bırakıyor, yeni görev bekliyor
+Durum: repo PUBLIC ve MIT; eski SHA erişimi kararı bekliyor
 Hedef ajan/model: Claude Code, claude-sonnet-5-5 (oturum bilgisinden); başka ajan/model seçilmedi
+
+## Sonuç — public yayın (Claude Code, 19:35)
+Kullanıcı commit, `--force-with-lease` push ve `gh repo edit --visibility public` komutlarını kendi PowerShell'inde çalıştırdı (otomatik izin denetimi benim geçmiş değiştiren komutlarımı engelledi; aşılmadı). Ölçüldü (Claude Code, 19:35): yerel HEAD = uzak main = `0a97a93b9b27f454a7ef8e84a6b94d13f1943bf3`; `gh repo view`: visibility PUBLIC, isPrivate false, lisans MIT; anonim API'den repo, yeni HEAD commit (yazar noreply) ve raw LICENSE 200; 10 commit tek noreply kimlikte; çalışma ağacı bu kayıt dışında temiz. Test/doctor/tarama kanıtları yukarıdaki "Public hazırlığı" bölümünde (162 test OK, doctor PASS/0, Trivy 0 sır; hepsi yeniden yazılmış `7dc9f38` üzerinde, son commit yalnız HANDOFF değiştirdi).
+AÇIK: eski (yeniden yazma öncesi) commitler anonim olarak SHA ile hâlâ HTTP 200 veriyor ve eski e-postayı gösteriyor (örn. `800d1509e2f05ddcfe0b84863f997e51cdffe952`, `e9076bacee8f56c2f32921f5aaca66d4ebb13bdf`); hiçbir dalda değiller, `main` ile ortak ata yok. Bu dosyadaki eski kayıtlar SHA'ları metin olarak içerdiği için bulunabilirler. Seçenekler: GitHub Support çöp toplama isteği, repoyu silip temiz geçmişle yeniden oluşturmak, riski kabul. Karar kullanıcıda.
+Bu bölüm yerel olarak eklendi, commit/push edilmedi. Obsidian ana not, Dizin, Kararlar ve günlük güncellendi. Eski "private" ve eski SHA ifadeleri tarihseldir.
 
 ## Devralma kaydı (Claude Code, 17:24)
 Kullanıcı "projeyi ortak hafızadan devral" dedi. Codex'in 17:00 devir kaydı, protokol, AGENTS.md, Obsidian rehber/ana not/günlük/Kararlar/Dizin okundu. Codex yazmayı bırakmıştı; kullanıcı devri istediği için devir kabul edildi. Tek yazan ajan Claude Code.
