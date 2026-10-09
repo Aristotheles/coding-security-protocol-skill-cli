@@ -1,0 +1,47 @@
+{
+  "type": "object",
+  "properties": {
+    "status": {
+      "enum": [
+        "PATCH_PROPOSED",
+        "CANNOT_FIX",
+        "NEEDS_HUMAN"
+      ]
+    },
+    "finding_id": {
+      "type": "string"
+    },
+    "unified_diff": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "changed_files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "suggested_tests": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "patch_source": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "finding_id",
+    "unified_diff",
+    "summary",
+    "changed_files",
+    "suggested_tests",
+    "patch_source"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

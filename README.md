@@ -3,7 +3,10 @@
 M0 implements environment validation through `security doctor`. M1 implements
 Semgrep/Trivy execution and raw evidence with `security scan`. M2 implements
 normalization, deduplication, canonical finding storage and index rebuild.
-Policy evaluation, verified finding closure and AI adapters belong to later milestones.
+M3 implements the policy gate and durable audit/escalation outbox. M4 implements
+deterministic test/rescan/runtime evidence and guarded core closure. M5 proposal
+adapters are implemented and validated with a live Codex provider. M6 adds
+configurable provider roles and independent advisory review with contract fallback.
 
 ## Run on Windows
 
@@ -64,8 +67,8 @@ PyYAML safely parses YAML; jsonschema validates the JSON Schema standard and
 typed config contract. These are the two dependencies; no framework is used.
 
 The SQLite index is generated at `.security/security.db`. Canonical finding JSON
-under `.security/findings/` remains versionable. AI schemas, adapter contract and
-secret playbook contents are deferred to their corresponding milestones.
+under `.security/findings/` remains versionable. AI schemas/contract and the secret
+playbook document the implemented boundaries.
 
 ## M1 scanner contract
 
@@ -162,6 +165,60 @@ acceptance in M4, after M3/M4 controls exist. M2 regression tests seed explicitl
 test-only historical CLOSED data; they do not claim real verification or closure.
 Generated `__pycache__` directories are excluded from the local Trivy profile.
 Real scans and examples target deliberately vulnerable, non-production fixtures.
+
+## M3 policy gate
+
+Run `security gate --event release --json` to evaluate current canonical blocks.
+To evaluate a change with collected evidence, use `security gate --input
+.security/evidence/gate-context.json --event merge --json`. See the
+[gate input contract](docs/gate-input.md) for fields, receipts and fail-closed rules.
+No-input execution never yields PASS; the current deliberately vulnerable fixture
+produces POL-005 BLOCK/10. A gate PASS does not close a finding.
+
+POL-001 through POL-007 are evaluated from the policy YAML. Decision reports and
+queued escalation targets persist locally and rebuild the existing SQLite audit
+tables. Notifications remain QUEUED until a future sender actually attempts them.
+The [secret leak playbook](.security/playbooks/secret-leak.md) describes the required
+response. Optional AI proposal adapters are described below.
+
+## M4 verification
+
+`security verify --target tests/fixtures/scanner-project --json` performs real scans
+and the configured `stack.tests` command. An unresolved fixture finding produces
+VERIFY_ERROR/60; it cannot claim PASS or close automatically. Runtime not_applicable
+remains NOT_APPLICABLE. To request a verified fix closure, provide accurate change
+metadata and use `security verify SEC-0001 --target app --input
+.security/evidence/change.json --close --json`. See the
+[verification contract](docs/verification-contract.md) for adapters, human waivers,
+original evidence retention, policy checks and recovery.
+
+## M5 AI proposals
+
+`security ai-patch SEC-0002 --json` validates an optional provider response, enforces
+patch boundaries and checks the diff against an isolated copy. It stores proposals
+and trust metadata; it does not apply a patch or close findings. All proposals return
+REVIEW_REQUIRED/20 until reviewed/applied and verified by M4. The default AI registry
+remains empty and core commands remain independent. Sensitive context is routed to
+human review before invocation. See the [AI adapter contract](docs/ai-adapter-contract.md)
+for Codex and native JSON command adapters, bounded context, schemas and audit.
+
+Automated adapter/contract tests and a live native Codex CLI proposal passed.
+The live response and diff dry-run validated, source remained unchanged and the
+result was PATCH_PROPOSED with REVIEW_REQUIRED/20. M6 review behavior is described below.
+
+## M6 provider fallback and review
+
+`security ai-patch` tries configured patch providers in order, then asks an eligible
+independent reviewer about a validated proposal. Optional provider `roles` select
+`patch`, `review` or both; omission supports both. `--provider` selects the author.
+Native review bridges return APPROVE, REJECT or CONCERNS bound to the proposal ID,
+author, reviewer and diff hash. Invalid content triggers fallback even with exit 0.
+
+Reviews are advisory. Missing independent review explicitly reduces confidence;
+restricted trust and configured sensitive paths still require human review.
+REJECT/CONCERNS routes to human review and is not retried to seek approval. Approval
+does not apply a patch, close a finding or replace M4 evidence. Empty providers keep
+manual remediation working. See the [AI adapter contract](docs/ai-adapter-contract.md).
 
 ## Repository scan exclusions
 

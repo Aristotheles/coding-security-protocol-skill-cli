@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-10-09T11:55:10.885462+00:00",
+  "mode": "FEATURE",
+  "full_suite": {
+    "command": "python -m unittest discover -s tests -v",
+    "count": 162,
+    "seconds": 250.324,
+    "exit_code": 0
+  },
+  "static": {
+    "ast_whitespace_no_shell_files": 34,
+    "compileall": "PASS",
+    "diff_check": "PASS",
+    "sqlite_integrity": "PASS",
+    "foreign_keys": "ON",
+    "targeted_credentials": "NO_MATCHES"
+  },
+  "actual_root_reference": ".agent/m6-command-results.json",
+  "native_cli_reference": ".agent/m6-native-cli.json",
+  "live_independent_ai": "NOT_VERIFIED",
+  "canonical_root_unchanged": true,
+  "commit_push": false
+}

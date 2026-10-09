@@ -1,4 +1,310 @@
 # Coding Security Protocol — ortak devir
+Güncelleme: 2026-10-09 14:56 Europe/Istanbul
+Aktif ajan: yok; son uygulama/doğrulama Codex
+Durum: M6 tamamlandı; M0–M6 uygulama/kabul tamam, duruldu
+Hedef ajan/model: başka ajan çalıştırılmadı; yeni live provider/model seçilmedi
+
+## Kullanıcı hedefi ve yetki sınırları
+Devam yalnız ilk unchecked M6. M3–M5 yerel çalışmalar korundu. Başka ajan/Claude/Antigravity, yeni framework/dependency, mimari/policy değişikliği, CI, auto apply/close veya commit/push/deploy yok.
+
+## Güncel durum ve tamamlananlar
+M0–M6 [x]. Config provider order ve patch/review roles; farklı reviewer, exact SEC/author/reviewer/diff SHA binding; invalid-output fallback ve explicit human_review. REJECT/CONCERNS sonrası approval aranmaz. Restricted author standard APPROVE ile upgrade olmaz. Advisory review mandatory deterministic tests/rescan/runtime/policy yerine geçmez. Canonical review/human_review_required gate metadata ile downgrade edilmez. Empty default registry ve zero-AI manual core korunur.
+
+## Git durumu ve değişen dosyalar
+main HEAD fc0b201; M3–M6 local modified/untracked; commit/push yok.
+M6 new: ai_review.py, ai-review request/response schemas, test_ai_review.py, test_ai_review_acceptance.py, M6 proof/native/command/final JSON records.
+M6 changed: ai_patch.py review/task integration; doctor.py roles; policy.py canonical review invariant; tests/support.py; AI contract/README/MVP/HANDOFF. Policy YAML/finding schema/SQL/AGENTS/SECURITY/requirements değişmedi.
+
+```text
+ M .agent/HANDOFF.md
+ M .security/findings/SEC-0001.json
+ M .security/findings/SEC-0002.json
+ M MVP.md
+ M README.md
+ M security-cli/lib/doctor.py
+ M security-cli/lib/scan.py
+ M security-cli/lib/store.py
+ M security.config.yml
+ M tests/integration/test_doctor_acceptance.py
+ M tests/support.py
+?? .agent/M3-VERIFICATION.md
+?? .agent/M4-VERIFICATION.md
+?? .agent/M5-VERIFICATION.md
+?? .agent/M6-VERIFICATION.md
+?? .agent/m3-command-results.json
+?? .agent/m4-command-results.json
+?? .agent/m5-command-results.json
+?? .agent/m5-connectivity-diagnosis.json
+?? .agent/m5-final-checks.json
+?? .agent/m5-live-cli.json
+?? .agent/m5-live-codex-before-env-fix.json
+?? .agent/m5-live-codex-env-fix-success.json
+?? .agent/m5-live-codex-initial.json
+?? .agent/m5-live-codex.json
+?? .agent/m6-command-results.json
+?? .agent/m6-final-checks.json
+?? .agent/m6-native-cli.json
+?? .security/playbooks/secret-leak.md
+?? docs/ai-adapter-contract.md
+?? docs/gate-input.md
+?? docs/verification-contract.md
+?? schemas/ai-patch-request.schema.json
+?? schemas/ai-patch-response.schema.json
+?? schemas/ai-review-request.schema.json
+?? schemas/ai-review-response.schema.json
+?? security-cli/lib/ai_patch.py
+?? security-cli/lib/ai_review.py
+?? security-cli/lib/gate_audit.py
+?? security-cli/lib/policy.py
+?? security-cli/lib/verify.py
+?? tests/integration/test_ai_patch_acceptance.py
+?? tests/integration/test_ai_review_acceptance.py
+?? tests/integration/test_gate_acceptance.py
+?? tests/integration/test_verification_acceptance.py
+?? tests/m3_support.py
+?? tests/m4_support.py
+?? tests/unit/test_ai_patch.py
+?? tests/unit/test_ai_review.py
+?? tests/unit/test_policy.py
+?? tests/unit/test_verify.py
+```
+
+## Doğrulama kanıtları
+Codex 2026-10-09 14:56 Europe/Istanbul: 162 test OK/0 (250.324 sn), 14 yeni unit + 3 native CLI acceptance; gerçek Semgrep/Trivy ve sıfır AI ile tests/rescan/runtime/policy verified CLOSED → aynı SEC ID REOPENED/regression geçti. M6 native TEST_ONLY bridge/CLI hash-binding fallback, advisory APPROVE/REJECT/CONCERNS, restricted trust ve empty providers manuel closure kabulü geçti. Root doctor PASS/0; release gate BLOCK/10, sensitive ai-patch REVIEW_REQUIRED/20; canonical byte eşliği korundu, SEC1/2/3 OPEN. 34 Python AST/whitespace/no-shell, compileall/diff ve SQLite FK/integrity PASS.
+.agent/M6-VERIFICATION.md, .agent/m6-command-results.json, .agent/m6-native-cli.json, .agent/m6-final-checks.json.
+Native review fixture raw/request/response/diff/audit copy path m6-native-cli JSON içinde; temporary test projesi temizlendi. Gerçek M5 live Codex kanıtı tarihsel .agent/M5-VERIFICATION.md'de; bu tur yeni canlı bağımsız AI çağrısı yapılmadı. 20 öneri/insan inceleme sonucudur, security PASS değildir. Final full suite kod freeze sonrası geçti.
+
+## Kalan işler ve engeller
+M6 acceptance engeli yok. İki farklı canlı AI sağlayıcısıyla bağımsız inceleme yapılmadı; native TEST_ONLY contract kabulü gerçek AI görüşü değildir. Diğer OS/Python, gerçek human approval/rotation/notification delivery doğrulanmadı. Bridge kimliği/provenance yerel operatör güvenine dayanır, kriptografik değildir. Sır taraması konservatiftir. M3–M6 yerel, commit/push yok; production release readiness iddiası yok.
+İlk M6 targeted test multiline argv nedeniyle CONFIG_ERROR verdi; test native script absolute file yapıldı, validator gevşetilmedi. Son full suite geçti.
+
+## Sıradaki tek işlem
+Kullanıcı göreviyle toplu son diff ve commit hazırlığı. Yeni milestone veya push/deploy otomatik başlamaz.
+
+## Arka plan süreçleri ve dış işler
+Aktif test/scan/provider/ajan yok. Son suite bitti. Bildirim/push/deploy yok.
+
+## Ortak hafıza bağlantıları ve eşitleme durumu
+<OBSIDIAN_VAULT>
+Projeler/Coding Security Protocol/Coding Security Protocol.md
+Günlük/2026-10-09 — Coding Security Protocol.md
+Kararlar.md#2026-10-09 — Coding Security Protocol M6 çalışması
+Ana not/günlük/karar/dizin aynı kapsamda güncellenir ve yeniden okunarak doğrulanır.
+
+## Devir geçmişi
+2026-10-09 14:56 Europe/Istanbul — Codex yalnız M6’yı tamamladı, MVP milestones [x], duruldu; başka ajan devri yok.
+
+## Önceki kayıt (korundu)
+
+# Coding Security Protocol — ortak devir
+Güncelleme: 2026-10-09 14:42 Europe/Istanbul
+Aktif ajan: yok; son uygulama/doğrulama Codex
+Durum: M5 tamamlandı; duruldu
+Hedef ajan/model: başka ajan istenmedi; live provider gpt-6.1-sol doğrulandı
+
+## Kullanıcı hedefi ve yetki sınırları
+Devam yalnız açık M5 kabulünü tamamladı. M6, CI, başka ajan, commit/push/deploy yok. Yeni dependency, mimari veya politika değişikliği yok.
+
+## Güncel durum ve tamamlananlar
+M0–M5 [x], M6 [ ]. Windows SYSTEMROOT case-sensitive allowlist hatası native network/DNS hatasıyla yeniden üretildi; case-insensitive key matching ile düzeldi. Secret env filtreleri korunur, oturum/TLS/model değişmedi. Proposal-only ve canonical trust sözleşmeleri korundu. Varsayılan providers boş. Önceki bağlantı engeli kaydı aşağıda tarihsel olarak korunur; bug yerel adapter'daydı.
+
+## Git durumu ve değişen dosyalar
+main HEAD fc0b201; M3–M5 modified/untracked, bu tur commit/push yok.
+Bu devamda ai_patch.py ortam filtresi/effective model audit, test_ai_patch.py regression assertion; README/MVP/AI contract/M5 report ve actual live/diagnosis/final JSON kayıtları güncellendi. Önceki M3/M4 dosyaları korundu.
+
+```text
+ M .agent/HANDOFF.md
+ M .security/findings/SEC-0001.json
+ M .security/findings/SEC-0002.json
+ M MVP.md
+ M README.md
+ M security-cli/lib/doctor.py
+ M security-cli/lib/scan.py
+ M security-cli/lib/store.py
+ M security.config.yml
+ M tests/integration/test_doctor_acceptance.py
+ M tests/support.py
+?? .agent/M3-VERIFICATION.md
+?? .agent/M4-VERIFICATION.md
+?? .agent/M5-VERIFICATION.md
+?? .agent/m3-command-results.json
+?? .agent/m4-command-results.json
+?? .agent/m5-command-results.json
+?? .agent/m5-connectivity-diagnosis.json
+?? .agent/m5-final-checks.json
+?? .agent/m5-live-cli.json
+?? .agent/m5-live-codex-before-env-fix.json
+?? .agent/m5-live-codex-env-fix-success.json
+?? .agent/m5-live-codex-initial.json
+?? .agent/m5-live-codex.json
+?? .security/playbooks/secret-leak.md
+?? docs/ai-adapter-contract.md
+?? docs/gate-input.md
+?? docs/verification-contract.md
+?? schemas/ai-patch-request.schema.json
+?? schemas/ai-patch-response.schema.json
+?? security-cli/lib/ai_patch.py
+?? security-cli/lib/gate_audit.py
+?? security-cli/lib/policy.py
+?? security-cli/lib/verify.py
+?? tests/integration/test_ai_patch_acceptance.py
+?? tests/integration/test_gate_acceptance.py
+?? tests/integration/test_verification_acceptance.py
+?? tests/m3_support.py
+?? tests/m4_support.py
+?? tests/unit/test_ai_patch.py
+?? tests/unit/test_policy.py
+?? tests/unit/test_verify.py
+```
+
+## Doğrulama kanıtları
+Codex 2026-10-09 14:42 Europe/Istanbul: 145 test OK/0 (218.233 sn), son ortam filtresi ve model-audit düzeltmeleri dahil. Gerçek Codex native adapter ve actual ai-patch CLI response/diff dry-run VALIDATED; PATCH_PROPOSED/REVIEW_REQUIRED20, source_unchanged=true, patch_applied=false, finding_closed=false. Effective model gpt-6.1-sol. Doctor PASS/0, compileall/AST/whitespace/no-shell/diff ve SQLite FK/integrity PASS. Root SEC1/2/3 OPEN.
+.agent/M5-VERIFICATION.md, .agent/m5-live-cli.json, .agent/m5-live-codex.json, .agent/m5-connectivity-diagnosis.json, .agent/m5-final-checks.json.
+Canlı CLI run 20261009T113429Z-ed58c93a8c3b4341a417525bd09a9d01. Runtime evidence_copy JSON'da; temp test projesi temizlendi. 20 öneri sonucudur, security PASS değildir. Önceki root gate BLOCK/10/sensitive context20 tarihsel; bugün gate tekrar çalıştırılmadı. Bare security fresh shell'de PATH olmadan bulunmadı; README session PATH ile actual doctor0 geçti.
+
+## Kalan işler ve engeller
+M5 kabul engeli yok. Diğer OS/Python, gerçek insan approval/rotation ve notification delivery doğrulanmadı. Trusted native bridge ve konservatif secret screening genel sandbox veya kapsamlı sır taraması değildir. M3–M5 yerel, commit/push yok.
+
+## Sıradaki tek işlem
+Yeni kullanıcı talimatıyla yalnız M6 — Provider Fallback / Review. Bu turda başlanmadı; duruldu.
+
+## Arka plan süreçleri ve dış işler
+Aktif test/scan/provider/ajan yok; native çağrılar tamamlandı. Bildirim/push/deploy yok.
+
+## Ortak hafıza bağlantıları ve eşitleme durumu
+<OBSIDIAN_VAULT>
+Projeler/Coding Security Protocol/Coding Security Protocol.md
+Günlük/2026-10-09 — Coding Security Protocol.md
+Kararlar.md#2026-10-09 — Coding Security Protocol M5 canlı kabul tamamlandı
+Ana not/günlük/dizin/karar aynı kapsamda güncellendi; yazı sonrası doğrulama yapılır.
+
+## Devir geçmişi
+2026-10-09 14:42 Europe/Istanbul — Codex M5 gerçek provider kabulünü tamamladı; M6 başlamadı; başka ajana devir yok.
+
+## Önceki kayıt (korundu)
+
+# Coding Security Protocol — ortak devir
+Güncelleme: 2026-10-09 14:24 Europe/Istanbul
+Aktif ajan: yok; son uygulama/doğrulama Codex
+Durum: M5 implementation mevcut, canlı provider kabulü bekliyor
+Hedef ajan/model: belirtilmedi; doğrulama: yapılmadı
+
+## Kullanıcı hedefi ve yetki sınırları
+“Devam” yalnız M5. Codex native proposal adapter actual read-only test çağrısı yapıldı; Claude/Antigravity veya paralel ajan yok. M6/AI review/CI/deploy/push yok. Yeni dependency/mimari/policy weakening yok. M3/M4 çalışmalarını koru.
+
+## Güncel durum ve tamamlananlar
+M0–M4 tamamlandı. M5 kodu uygulandı; canlı Codex doğrulaması bağlantı hatası nedeniyle açık, M5/M6 [ ]. M3–M5 local, commit/push yok.
+AI schema/ID/source/diff/protected/allowed/dry-run/audit ve canonical PATCH_PROPOSED önce→derived index uygulandı. Restricted trust downstream metadata ile downgrade olmaz. Default provider registry boş. Kaynak patch uygulanmadı, hiçbir root finding kapanmadı. TEST_ONLY adapter başarıları live AI başarısı değildir.
+
+## Git durumu ve değişen dosyalar
+main HEAD fc0b201, M3–M5 modified/untracked. Yeni M5: ai_patch.py, request/response schemas, docs/ai-adapter-contract.md, test_ai_patch.py, test_ai_patch_acceptance.py, .agent/M5-VERIFICATION.md, m5-command-results.json, m5-live-codex-initial.json, m5-live-codex.json. M5 changed: doctor.py, scan.py stdin/env support, policy.py trust, tests/support.py, README/MVP/HANDOFF. Existing config/store/SEC1–2 observation changes M3/M4'tendir. Policy YAML/SQL/finding schema/AGENTS/SECURITY untouched.
+
+## Doğrulama kanıtları
+Codex 2026-10-09 14:24 Europe/Istanbul: 145 test OK/0 (188.267 sn); son SQLite-error düzeltmesi ardından 11 M5 unit tekrar OK (14.801 sn). Gerçek native TEST_ONLY command adapter/CLI dry-run ve fallback geçti; bu gerçek AI başarısı değildir. İki live Codex çağrısı workspace routing discovery failed ile human_review/20; source değişmedi. Root ai-patch SEC-0002 sensitive context nedeniyle çağrı öncesi human_review/20; doctor0, gate10, canonical finding byte eşliği korundu. 31 Python AST/whitespace/no-shell, compileall/diff ve SQLite FK/integrity PASS.
+Full suite son sqlite exception classification öncesi; son değişiklik 11 M5 unit ile tekrar doğrulandı. Actual live evidence_copy directory mappings JSON kaydında; temporary project temizlendi. Evidence files gitignored ve saklı. .agent/M5-VERIFICATION.md, m5-command-results.json, m5-live-codex*.json.
+
+## Kalan işler ve engeller
+Live provider iki kez tool_error/workspace routing discovery failed. Existing CLI logged-in; connectivity doğrulanmadı. M5 acceptance son live-provider criterion açık; NOT VERIFIED, M6 NOT READY. Native bridge local trust/secret screening/general sandbox limits docs'ta. Other OS/Python/real approval/rotation/delivery NOT VERIFIED. Root fixtures OPEN. M3–M5 commit/push yok.
+
+## Sıradaki tek işlem
+Yalnız M5: actual Codex connection/transport hatasını teşhis et, aynı live contract/proposal dry-run kontrolünü tekrarla. M5 işaretini ancak gerçek kabul geçince güncelle.
+
+## Arka plan süreçleri ve dış işler
+Aktif test/scan/provider/ajan yok. İki live Codex attempt bitti; modelin repo dosyalarına yazması yetkilendirilmedi. Push/deploy/notification yok.
+
+## Ortak hafıza bağlantıları ve eşitleme durumu
+Kasa <OBSIDIAN_VAULT>
+Projeler/Coding Security Protocol/Coding Security Protocol.md
+Günlük/2026-10-09 — Coding Security Protocol.md
+Kararlar.md#2026-10-09 — Coding Security Protocol M5 çalışması
+Ana not/günlük/dizin/karar güncellendi ve yeniden okunur; geçmiş korunur.
+
+## Devir geçmişi
+2026-10-09 14:24 Europe/Istanbul — Codex M5 local implementation/tests tamamladı, live kabulü kapatmadı. Başka ajan devri yok.
+
+## Önceki kayıt (korundu)
+
+# Coding Security Protocol — ortak devir
+Güncelleme: 2026-10-09 14:01 Europe/Istanbul
+Aktif ajan: yok; son uygulama/doğrulama: Codex
+Durum: M4 tamamlandı; duruldu
+Hedef ajan/model: belirtilmedi; doğrulama: yapılmadı
+
+## Kullanıcı hedefi ve yetki sınırları
+“Devamke” yalnız ilk unchecked M4'ü yetkilendirdi. M5/AI/CI yok; yeni dependency veya mimari değişikliği yok. Önceki snapshot push tamamlandı; M3+M4 commit/push edilmedi. Başka ajan/deploy yok.
+
+## Güncel durum ve tamamlananlar
+M0–M4 tamamlandı; M5/M6 başlamadı. M3+M4 local, commit/push yapılmadı.
+security verify gerçek static→tests→rescan→runtime→policy kanıtı toplar. Explicit --close matching proof/audited PASS sonrası canonical JSON CLOSED, sonra index; regression aynı SEC ID. Empty AI ile gerçek closure lifecycle geçti. NOT_APPLICABLE/WAIVED fake PASS olmaz.
+
+## Git durumu ve değişen dosyalar
+main HEAD fc0b201; M3+M4 modified/untracked. M4 yeni: verify.py, tests/m4_support.py, test_verify.py, test_verification_acceptance.py, docs/verification-contract.md, .agent/M4-VERIFICATION.md, m4-command-results.json. Modified: doctor.py, scan.py, store.py, policy.py (M3 local new), security.config.yml stack.tests, test support/doctor acceptance, gate-input.md, README/MVP, SEC-0001/2 observations, HANDOFF. M3 dosyaları korunur. Protected policy/schema/DB schema/AGENTS/SECURITY diff boş.
+
+## Doğrulama kanıtları
+Codex 2026-10-09 14:01 Europe/Istanbul: 132 test OK/0 (203.566 sn); gerçek Semgrep/Trivy lifecycle OPEN → aynı SEC ID → tests/rescan/runtime/policy ile CLOSED → restore ile aynı ID REOPENED/regression=true. Root verify VERIFY_ERROR/60: tests PASS, rescan FAIL (bilerek açık fixtures), runtime NOT_APPLICABLE; root findings OPEN. doctor PASS/0, gate BLOCK/10, ai-patch CONTRACT_ERROR/50. 28 Python AST/whitespace/no-shell ve compileall/diff PASS; SQLite integrity/FK OK.
+Gerçek root verify 95.237 sn; gate10; actual DB üç OPEN finding/üç gate run. Kanıt .agent/M4-VERIFICATION.md ve m4-command-results.json. Root bulgusu kapanmadı.
+
+## Kalan işler ve engeller
+M4 acceptance engeli yok. Local trusted receipts/human waiver crypto authentication değildir. Pre-M4 provenance eksikse fix öncesi fresh baseline gerekir; raw/runtime audit dosyalarını koru. Gerçek credential rotation/approval/delivery, diğer OS/Python sürümleri DOĞRULANMADI. Canonical OPEN fixture findings korunuyor. M3+M4 commit/push yok.
+
+## Sıradaki tek işlem
+Yeni kullanıcı göreviyle yalnız M5 — AI Adapter; bu turda başlanmadı.
+
+## Arka plan süreçleri ve dış işler
+Aktif test/scan/ajan yok. Push/deploy/AI çağrısı yok. Yalnız Codex yazdı.
+
+## Ortak hafıza bağlantıları ve eşitleme durumu
+Kasa <OBSIDIAN_VAULT>
+Projeler/Coding Security Protocol/Coding Security Protocol.md
+Günlük/2026-10-09 — Coding Security Protocol.md
+Kararlar.md#2026-10-09 — Coding Security Protocol M4 çalışması
+Ana not/günlük/dizin/karar güncellendi; eski kayıtlar korunur, yazım sonrası yeniden doğrulanır.
+
+## Devir geçmişi
+2026-10-09 14:01 Europe/Istanbul — Codex M4 tamamladı; başka ajan devri yok.
+
+## Önceki kayıt (korundu)
+
+# Coding Security Protocol — ortak devir
+Güncelleme: 2026-10-09 13:29 Europe/Istanbul
+Aktif ajan: yok; son uygulama/doğrulama: Codex
+Durum: M3 tamamlandı; duruldu
+Hedef ajan/model: belirtilmedi; doğrulama: yapılmadı
+
+## Kullanıcı hedefi ve yetki sınırları
+“Devam” ilk unchecked M3 çalışmasını yetkilendirdi. Yalnız M3 uygulandı; M4 collector/closure, AI ve CI yok. Önceki “şu ana kadar” push görevi M0–M2 için tamamlanmıştı; yeni M3 değişiklikleri commit/push edilmedi. Başka ajan/deploy yok.
+
+## Güncel durum ve tamamlananlar
+M0–M3 [x], M4–M6 [ ]. security gate POL-001..007'yi YAML'dan değerlendirir. Report→SQLite audit ve logical QUEUED escalation outbox; index rebuild audit/dedup state korur. Policy PASS bulgu kapatmaz. Receipts trusted deterministic/human input; gate üretici değildir. Secret leak playbook mevcut.
+
+## Git durumu ve değişen dosyalar
+Branch main, HEAD fc0b201; M3 local modified/untracked. Değişen: MVP.md, README.md, doctor.py, store.py, tests/support.py, test_doctor_acceptance.py, HANDOFF.md. Yeni: policy.py, gate_audit.py, tests/m3_support.py, test_policy.py, test_gate_acceptance.py, docs/gate-input.md, .security/playbooks/secret-leak.md, .agent/M3-VERIFICATION.md, m3-command-results.json. Policy/config/finding-schema/DB-schema/invariants/canonical finding diff boş.
+
+## Doğrulama kanıtları
+Codex 2026-10-09 13:29 Europe/Istanbul: full suite 107 test OK/0, 86.215 sn. 27 yeni policy unit +4 gate CLI acceptance; eski gerçek scanners/store testleri dahil. Gerçek gate BLOCK/10 (TEST_ONLY secret fixtures), doctor PASS/0, verify CONTRACT_ERROR/50. compileall exit 0, 23 Python AST/whitespace/no-shell PASS; diff check PASS; actual DB gate_runs BLOCK1/FK ON/integrity ok. Kanıt .agent/M3-VERIFICATION.md ve m3-command-results.json.
+
+## Kalan işler ve engeller
+M3 acceptance engeli yok. Current fixture secret findings OPEN kaldı. Gerçek evidence collection, verification/closure M4 bekler. Review/waiver/rotation approval veya notification delivery yapılmadı. Test-only receipt producer contexts gerçek production verification iddiası değildir. Diğer OS/Python sürümleri doğrulanmadı. Audit için runtime gate report dosyaları korunmalı; gitignored.
+
+## Sıradaki tek işlem
+Yeni kullanıcı göreviyle M4 — Verification Layer. Bu turda başlanmadı.
+
+## Arka plan süreçleri ve dış işler
+Aktif test/scan/ajan yok. Push/deploy/CI/AI çağrısı yok.
+
+## Ortak hafıza bağlantıları ve eşitleme durumu
+Kasa <OBSIDIAN_VAULT>
+Projeler/Coding Security Protocol/Coding Security Protocol.md
+Günlük/2026-10-09 — Coding Security Protocol.md
+Kararlar.md#2026-10-09 — Coding Security Protocol M3 çalışması
+Kayıtlar yazılıp yeniden okunarak doğrulanır; eski devir kayıtları korunur.
+
+## Devir geçmişi
+2026-10-09 13:29 Europe/Istanbul — Codex M3 tamamladı; başka ajan devri yok. M3 commit/push yapılmadı.
+
+## Önceki kayıt (korundu)
+
+# Coding Security Protocol — ortak devir
 Güncelleme: 2026-10-09 12:03 Europe/Istanbul
 Aktif ajan: yok; son doğrulama: Codex
 Durum: M0–M2 commit ve ilk GitHub push tamamlandı; sonuç kaydı ayrı docs commit ile gönderilir

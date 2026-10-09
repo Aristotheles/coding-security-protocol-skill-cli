@@ -25,8 +25,10 @@ class DoctorProject(unittest.TestCase):
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(REPOSITORY / name, target)
         shutil.copy2(REPOSITORY / 'security-cli/lib/scan.py', self.root / 'security-cli/lib/scan.py')
-        for name in ('storage_io.py', 'normalize.py', 'store.py', 'sarif-2.1.0.schema.json'):
+        for name in ('storage_io.py', 'normalize.py', 'store.py', 'gate_audit.py', 'policy.py', 'verify.py', 'ai_patch.py', 'ai_review.py', 'sarif-2.1.0.schema.json'):
             shutil.copy2(REPOSITORY / 'security-cli/lib' / name, self.root / 'security-cli/lib' / name)
+        for name in ('ai-patch-request.schema.json', 'ai-patch-response.schema.json', 'ai-review-request.schema.json', 'ai-review-response.schema.json'):
+            shutil.copy2(REPOSITORY / 'schemas' / name, self.root / 'schemas' / name)
         config = self.config()
         for name, profile in config['scanners'].items():
             profile.update(executable=name, enabled=False, mandatory=False)

@@ -1,0 +1,39 @@
+{
+  "kind": "LIVE_CODEX_NOT_TEST_DOUBLE",
+  "report": {
+    "project": "Coding Security Protocol",
+    "command": "ai-patch",
+    "run_id": "20261009T113252Z-49466252c6a44085af058a689c99c068",
+    "finding_id": "SEC-0001",
+    "started_at": "2026-10-09T11:32:52.775310Z",
+    "attempts": [
+      {
+        "provider": "codex",
+        "model": "gpt-6.1-sol",
+        "trust": "standard",
+        "started_at": "2026-10-09T11:32:52.807767Z",
+        "response_validation": "VALIDATED",
+        "patch_reference": ".security/evidence/20261009T113252Z-49466252c6a44085af058a689c99c068/0/proposal.diff",
+        "result": "PATCH_PROPOSED",
+        "fallback_reason": null,
+        "finished_at": "2026-10-09T11:33:02.176038Z"
+      }
+    ],
+    "result": "REVIEW_REQUIRED",
+    "exit_code": 20,
+    "terminal_state": "PATCH_PROPOSED",
+    "finding_closed": false,
+    "patch_applied": false,
+    "canonical_written": true,
+    "patch_reference": ".security/evidence/20261009T113252Z-49466252c6a44085af058a689c99c068/0/proposal.diff",
+    "patch_source": "codex",
+    "trust": "standard",
+    "human_review_required": false,
+    "detail": "proposal only; apply and deterministic verification remain required",
+    "finished_at": "2026-10-09T11:33:02.178559Z",
+    "report_reference": ".security/reports/20261009T113252Z-49466252c6a44085af058a689c99c068-ai-patch-report.json"
+  },
+  "evidence_copy": ".security/evidence/m5-live-b5dbb41bab524eee9f3af6794f3551bc",
+  "source_unchanged": true,
+  "canonical_status": "PATCH_PROPOSED"
+}

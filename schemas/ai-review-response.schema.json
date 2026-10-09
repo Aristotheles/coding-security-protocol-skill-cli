@@ -1,0 +1,42 @@
+{
+  "type": "object",
+  "properties": {
+    "status": {
+      "enum": [
+        "APPROVE",
+        "REJECT",
+        "CONCERNS"
+      ]
+    },
+    "finding_id": {
+      "type": "string",
+      "pattern": "^SEC-[0-9]{4,}$"
+    },
+    "patch_source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reviewer_source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "patch_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "status",
+    "finding_id",
+    "patch_source",
+    "reviewer_source",
+    "patch_sha256",
+    "summary"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

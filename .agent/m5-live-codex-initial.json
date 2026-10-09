@@ -1,0 +1,33 @@
+{
+  "kind": "LIVE_CODEX_NOT_TEST_DOUBLE",
+  "report": {
+    "project": "Coding Security Protocol",
+    "command": "ai-patch",
+    "run_id": "20261009T111410Z-d5507d82544540c4b036e7c4c5f5abfe",
+    "finding_id": "SEC-0001",
+    "started_at": "2026-10-09T11:14:10.140961Z",
+    "attempts": [
+      {
+        "provider": "codex",
+        "model": null,
+        "trust": "standard",
+        "started_at": "2026-10-09T11:14:10.178384Z",
+        "response_validation": "NOT_CHECKED",
+        "patch_reference": null,
+        "result": "REJECTED",
+        "fallback_reason": "tool_error",
+        "finished_at": "2026-10-09T11:14:23.580279Z"
+      }
+    ],
+    "result": "REVIEW_REQUIRED",
+    "exit_code": 20,
+    "terminal_state": "human_review",
+    "finding_closed": false,
+    "patch_applied": false,
+    "detail": "no valid AI proposal; human remediation required",
+    "finished_at": "2026-10-09T11:14:23.582806Z",
+    "report_reference": ".security/reports/20261009T111410Z-d5507d82544540c4b036e7c4c5f5abfe-ai-patch-report.json"
+  },
+  "evidence_copy": ".security/evidence/m5-live-3feb676ea3184642922b867808cc47ef",
+  "source_unchanged": true
+}

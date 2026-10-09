@@ -1,0 +1,41 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "task": {
+      "const": "review"
+    },
+    "finding_id": {
+      "type": "string",
+      "pattern": "^SEC-[0-9]{4,}$"
+    },
+    "patch_source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "patch_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "unified_diff": {
+      "type": "string",
+      "minLength": 1
+    },
+    "patch_request": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "version",
+    "task",
+    "finding_id",
+    "patch_source",
+    "patch_sha256",
+    "unified_diff",
+    "patch_request"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

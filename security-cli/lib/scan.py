@@ -1,6 +1,7 @@
 """M1 scanner execution and raw evidence. No normalization or policy gate."""
 from datetime import datetime, timezone
 import json
+import hashlib
 import os
 from pathlib import Path
 import signal
@@ -13,7 +14,30 @@ from .doctor import (CONFIG_ERROR, TOOL_ERROR, ConfigError, load_yaml, validate_
 
 
 def timestamp():
-    return datetime.now(timezone.utc).isoformat(timespec='seconds').replace('+00:00', 'Z')
+    return datetime.now(timezone.utc).isoformat(timespec='microseconds').replace('+00:00', 'Z')
+
+
+def profile_inputs(root, profile):
+    """Local scanner rule/config files must not change to make a fix disappear."""
+    result = {'@git-root': hashlib.sha256(b'git' if (root / '.git').exists() else b'no-git').hexdigest()}
+    # Target selection is part of scanner evidence too. A newly added ignore
+    # file must not make an unchanged vulnerability count as a verified fix.
+    ignored = {'.git', '.security', '.tools', '.agent', '.serena', '.venv', '__pycache__', 'node_modules'}
+    for directory, dirs, files in os.walk(root):
+        dirs[:] = [d for d in dirs if d not in ignored]
+        for name in ('.gitignore', '.semgrepignore'):
+            if name in files:
+                path = (Path(directory) / name).resolve()
+                if not path.is_relative_to(root):
+                    raise ConfigError('scanner ignore configuration escapes project')
+                result[path.relative_to(root).as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()
+    for arg in profile['argv']:
+        if arg == '{target}' or arg.startswith('-'):
+            continue
+        path = (root / arg).resolve()
+        if path.is_relative_to(root) and path.is_file():
+            result[path.relative_to(root).as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()
+    return result
 
 
 def executable_path(root, name):
@@ -25,11 +49,11 @@ def executable_path(root, name):
     return path
 
 
-def execute(command, root, timeout, stdout_path, stderr_path):
+def execute(command, root, timeout, stdout_path, stderr_path, stdin=subprocess.DEVNULL, env=None):
     """Stream raw bytes directly to exclusive files; kill descendants on timeout."""
     with stdout_path.open('xb') as stdout, stderr_path.open('xb') as stderr:
         process = subprocess.Popen(command, cwd=root, stdout=stdout, stderr=stderr,
-                                   stdin=subprocess.DEVNULL, shell=False,
+                                   stdin=stdin, env=env, shell=False,
                                    start_new_session=os.name != 'nt')
         try:
             return process.wait(timeout=timeout), False
@@ -86,6 +110,7 @@ def run_scan(root, target='.'):
         if not scan_target.is_relative_to(root) or not scan_target.exists():
             raise ConfigError('scan target must exist within project root')
         profiles = config['scanners']
+        report['target'] = scan_target.relative_to(root).as_posix()
         if not any(profile['enabled'] for profile in profiles.values()):
             raise ConfigError('no enabled scanners; no scan performed')
         for profile in profiles.values():
@@ -108,6 +133,7 @@ def run_scan(root, target='.'):
             item['finished_at'] = timestamp()
             continue
         try:
+            item['profile_inputs'] = profile_inputs(root, profile)
             executable = executable_path(root, profile['executable'])
             if not executable:
                 raise FileNotFoundError('scanner executable unavailable')
@@ -131,6 +157,8 @@ def run_scan(root, target='.'):
             item['argv'] = command
             code, timed_out = execute(command, root, profile['timeout_seconds'], raw, stderr)
             item.update(scanner_exit_code=code, timed_out=timed_out)
+            if item['profile_inputs'] != profile_inputs(root, profile):
+                raise ValueError('scanner rule/config files changed during execution')
             if timed_out:
                 raise TimeoutError('scanner timeout')
             findings = sarif_count(raw)

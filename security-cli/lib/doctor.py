@@ -90,6 +90,9 @@ SCANNER = object_schema({
 PROVIDER = object_schema({
     'id': TEXT, 'adapter': TEXT, 'model': TEXT, 'enabled': BOOLEAN,
     'trust': {'enum': ['standard', 'restricted']},
+    'executable': TEXT, 'argv': {'type': 'array', 'items': TEXT}, 'timeout_seconds': TIMEOUT,
+    'roles': {'type': 'array', 'minItems': 1, 'uniqueItems': True,
+              'items': {'enum': ['patch', 'review']}},
 }, ['id', 'adapter', 'enabled', 'trust'])
 RUNTIME = {'oneOf': [
     object_schema({'mode': {'const': 'not_applicable'}}),
@@ -101,7 +104,8 @@ CONFIG_SCHEMA = object_schema({
     'scanners': object_schema({'semgrep': SCANNER, 'trivy': SCANNER}),
     'ai': object_schema({'providers': {'type': 'array', 'items': PROVIDER}}),
     'runtime_verify': RUNTIME,
-})
+    'stack': object_schema({'tests': object_schema({'argv': ARGV, 'timeout_seconds': TIMEOUT})}),
+}, ['version', 'scanners', 'ai', 'runtime_verify'])
 
 
 def validate_config(data):
@@ -321,18 +325,33 @@ def main(argv=None):
             self.exit(CONFIG_ERROR, 'CONFIG_ERROR: invalid CLI arguments\n')
 
     parser = SecurityParser(description='Coding Security Protocol - Deterministic Core')
-    parser.add_argument('command', help='doctor, scan, normalize or findings')
+    parser.add_argument('command', help='doctor, scan, normalize, findings or gate')
     parser.add_argument('action', nargs='?')
     parser.add_argument('identifier', nargs='?')
     parser.add_argument('--root', type=Path, default=Path.cwd(), help='project root; defaults to current directory')
     parser.add_argument('--json', action='store_true', help='emit machine-readable JSON')
     parser.add_argument('--target', default='.', help='scan target within project root')
     parser.add_argument('--run-id', help='scan run ID for normalize or findings update')
+    parser.add_argument('--input', type=Path, help='project-relative gate context JSON')
+    parser.add_argument('--event', choices=('merge', 'release'), help='gate event; must match input context')
+    parser.add_argument('--close', action='store_true', help='verify and deterministically close explicitly targeted findings')
+    parser.add_argument('--waiver', type=Path, help='existing human-approved runtime waiver JSON under .security')
+    parser.add_argument('--provider', help='configured AI provider ID; no implicit trust upgrade')
     args = parser.parse_args(argv)
-    if args.command in ('doctor', 'scan', 'normalize') and (args.action or args.identifier):
+    if args.provider and args.command != 'ai-patch':
+        parser.error('provider requires ai-patch')
+    if args.command == 'ai-patch' and args.identifier:
+        parser.error('only one finding ID supported')
+    if args.command in ('doctor', 'scan', 'normalize', 'gate') and (args.action or args.identifier):
         parser.error('unexpected positional arguments')
     if args.command == 'findings' and args.action in ('update', 'rebuild-index') and args.identifier:
         parser.error('unexpected finding identifier')
+    if args.command not in ('gate', 'verify') and (args.input is not None or args.event is not None):
+        parser.error('gate arguments require gate command')
+    if args.command != 'verify' and (args.close or args.waiver):
+        parser.error('verification arguments require verify command')
+    if args.command == 'verify' and args.identifier:
+        parser.error('only one positional finding ID is supported')
     if args.command in ('normalize', 'findings'):
         try:
             from . import normalize, store
@@ -365,13 +384,37 @@ def main(argv=None):
             report.update(result='TOOL_ERROR', exit_code=TOOL_ERROR, detail=type(exc).__name__)
         except Exception as exc:
             report.update(result='CONTRACT_ERROR', exit_code=CONTRACT_ERROR, detail=type(exc).__name__)
+    elif args.command == 'ai-patch':
+        try:
+            from .ai_patch import run_ai_patch
+            report = run_ai_patch(args.root, args.action, args.provider)
+        except ImportError:
+            report = {'project': 'Coding Security Protocol', 'command': 'ai-patch',
+                      'result': 'TOOL_ERROR', 'exit_code': TOOL_ERROR,
+                      'detail': 'required parser dependency unavailable'}
+    elif args.command == 'verify':
+        try:
+            from .verify import run_verify
+            report = run_verify(args.root, args.target, args.input, args.event, args.action, args.close, args.waiver)
+        except ImportError:
+            report = {'project': 'Coding Security Protocol', 'command': 'verify',
+                      'result': 'TOOL_ERROR', 'exit_code': TOOL_ERROR,
+                      'detail': 'required parser dependency unavailable'}
+    elif args.command == 'gate':
+        try:
+            from .policy import run_gate
+            report = run_gate(args.root, args.input, args.event)
+        except ImportError:
+            report = {'project': 'Coding Security Protocol', 'command': 'gate',
+                      'result': 'TOOL_ERROR', 'exit_code': TOOL_ERROR,
+                      'detail': 'required parser dependency unavailable'}
     elif args.command == 'scan':
         from .scan import run_scan
         report = run_scan(args.root, args.target)
     elif args.command != 'doctor':
         report = {'project': 'Coding Security Protocol', 'command': args.command,
                   'result': 'CONTRACT_ERROR', 'exit_code': CONTRACT_ERROR,
-                  'detail': 'command not implemented in M2'}
+                  'detail': 'command not implemented in M4'}
     else:
         report = run_doctor(args.root)
     if args.json:
@@ -382,6 +425,14 @@ def main(argv=None):
             print(f"[{check['state']}] {check['name']}: {check['detail']}")
         for scan in report.get('scanners', []):
             print(f"[{scan['state']}] {scan['tool']}: findings={scan.get('findings_count', 'unknown')}")
+        for policy in report.get('policies', []):
+            print(f"[{policy['action']}] {policy['policy_id']}: {policy['reason']}")
+        for issue in report.get('evidence_issues', []):
+            print('[MISSING/FAIL] ' + issue)
+        for name, evidence in report.get('evidence', {}).items():
+            print(f"[{evidence['state']}] {name}")
+        if report.get('closed_ids'):
+            print('Closed after verification: ' + ', '.join(report['closed_ids']))
         if 'detail' in report:
             print(report['detail'])
         if 'ids' in report:

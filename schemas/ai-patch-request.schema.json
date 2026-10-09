@@ -1,0 +1,96 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "finding": {
+      "type": "object"
+    },
+    "context": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string"
+          },
+          "start_line": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "path",
+          "content",
+          "sha256",
+          "start_line"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "allowed_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "forbidden_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max_files_changed": {
+          "const": 1
+        },
+        "no_new_dependencies": {
+          "const": true
+        },
+        "no_policy_edits": {
+          "const": true
+        }
+      },
+      "required": [
+        "allowed_paths",
+        "forbidden_paths",
+        "max_files_changed",
+        "no_new_dependencies",
+        "no_policy_edits"
+      ],
+      "additionalProperties": false
+    },
+    "policy_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "prior_remediation_history": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  },
+  "required": [
+    "version",
+    "finding",
+    "context",
+    "constraints",
+    "policy_ids",
+    "prior_remediation_history"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

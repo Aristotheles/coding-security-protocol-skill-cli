@@ -1,0 +1,101 @@
+{
+  "timestamp": "2026-10-09T12:01:08.178405+00:00",
+  "doctor": {
+    "project": "Coding Security Protocol",
+    "command": "doctor",
+    "run_id": "20261009T120107Z-334f70f0",
+    "timestamp": "2026-10-09T12:01:07Z",
+    "result": "PASS",
+    "exit_code": 0,
+    "checks": [
+      {
+        "name": "python",
+        "state": "PASS",
+        "code": 0,
+        "detail": "3.14.5"
+      },
+      {
+        "name": "structure",
+        "state": "PASS",
+        "code": 0,
+        "detail": "valid"
+      },
+      {
+        "name": "parser_dependencies",
+        "state": "PASS",
+        "code": 0,
+        "detail": "valid"
+      },
+      {
+        "name": "security_config",
+        "state": "PASS",
+        "code": 0,
+        "detail": "valid"
+      },
+      {
+        "name": "policy",
+        "state": "PASS",
+        "code": 0,
+        "detail": "parsed definitions; policy evaluation is outside M0"
+      },
+      {
+        "name": "finding_schema",
+        "state": "PASS",
+        "code": 0,
+        "detail": "valid"
+      },
+      {
+        "name": "ai_provider_registry",
+        "state": "PASS",
+        "code": 0,
+        "detail": "syntax validated; no adapter executed"
+      },
+      {
+        "name": "runtime_verifier_config",
+        "state": "PASS",
+        "code": 0,
+        "detail": "syntax validated; no adapter executed"
+      },
+      {
+        "name": "semgrep",
+        "state": "PASS",
+        "code": 0,
+        "detail": "executable available; not executed"
+      },
+      {
+        "name": "trivy",
+        "state": "PASS",
+        "code": 0,
+        "detail": "executable available; not executed"
+      },
+      {
+        "name": "runtime_write_access",
+        "state": "PASS",
+        "code": 0,
+        "detail": "valid"
+      },
+      {
+        "name": "sqlite_initialization",
+        "state": "PASS",
+        "code": 0,
+        "detail": "initialized; foreign_keys=ON; schema and integrity checked"
+      }
+    ]
+  },
+  "sqlite_integrity": "PASS",
+  "staged_files": 52,
+  "secret_scan": "TARGETED_NO_MATCHES_NOT_COMPREHENSIVE",
+  "code_changes_this_turn": false,
+  "push": false,
+  "full_suite": {
+    "command": "python -m unittest discover -s tests -v",
+    "count": 162,
+    "seconds": 269.406,
+    "exit_code": 0
+  },
+  "remote_main_observed": "fc0b20146ec418ef803834b59568e973cd3201bf",
+  "remote_observed_at": "2026-10-09T12:02:20.169481+00:00",
+  "remote_check": "git ls-remote origin refs/heads/main (read-only; no push)",
+  "finished_at": "2026-10-09T12:03:03.228721+00:00",
+  "final_staged_files": 54
+}

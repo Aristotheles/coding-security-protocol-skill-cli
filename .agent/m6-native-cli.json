@@ -1,0 +1,134 @@
+{
+  "kind": "ACTUAL_CLI_TEST_ONLY_PROVIDER_BRIDGES_NOT_LIVE_AI",
+  "exit_code": 20,
+  "report": {
+    "project": "Coding Security Protocol",
+    "command": "ai-patch",
+    "run_id": "20261009T115121Z-56f008e83d8041f2865a1861d19c10e8",
+    "finding_id": "SEC-0001",
+    "started_at": "2026-10-09T11:51:21.614441Z",
+    "attempts": [
+      {
+        "provider": "author",
+        "model": null,
+        "trust": "restricted",
+        "started_at": "2026-10-09T11:51:21.687430Z",
+        "response_validation": "VALIDATED",
+        "patch_reference": ".security/evidence/20261009T115121Z-56f008e83d8041f2865a1861d19c10e8/0/proposal.diff",
+        "result": "PATCH_PROPOSED",
+        "fallback_reason": null,
+        "finished_at": "2026-10-09T11:51:22.091024Z"
+      }
+    ],
+    "result": "REVIEW_REQUIRED",
+    "exit_code": 20,
+    "terminal_state": "PATCH_PROPOSED",
+    "finding_closed": false,
+    "patch_applied": false,
+    "review": {
+      "advisory": true,
+      "status": "APPROVE",
+      "reviewer_source": "reviewer1",
+      "reviewer_trust": "standard",
+      "confidence": "INDEPENDENT_ADVISORY",
+      "terminal_state": "human_review",
+      "attempts": [
+        {
+          "provider": "reviewer0",
+          "model": null,
+          "trust": "standard",
+          "started_at": "2026-10-09T11:51:21.859720Z",
+          "response_validation": "SCHEMA_VALID",
+          "result": "REJECTED_OUTPUT",
+          "fallback_reason": "review_patch_binding_mismatch",
+          "finished_at": "2026-10-09T11:51:21.954926Z"
+        },
+        {
+          "provider": "reviewer1",
+          "model": null,
+          "trust": "standard",
+          "started_at": "2026-10-09T11:51:21.957625Z",
+          "response_validation": "VALIDATED",
+          "result": "APPROVE",
+          "fallback_reason": null,
+          "finished_at": "2026-10-09T11:51:22.033970Z"
+        }
+      ],
+      "human_review_required": true,
+      "response_reference": ".security/evidence/20261009T115121Z-56f008e83d8041f2865a1861d19c10e8/review-1/response.json",
+      "patch_sha256": "a5560fc224e67fe8d7d26fc6c4c0f114dfe771febac75f78eb8e36619bec8097"
+    },
+    "canonical_written": true,
+    "patch_reference": ".security/evidence/20261009T115121Z-56f008e83d8041f2865a1861d19c10e8/0/proposal.diff",
+    "patch_source": "author",
+    "trust": "restricted",
+    "human_review_required": true,
+    "detail": "proposal only; apply and deterministic verification remain required",
+    "finished_at": "2026-10-09T11:51:22.092644Z",
+    "report_reference": ".security/reports/20261009T115121Z-56f008e83d8041f2865a1861d19c10e8-ai-patch-report.json"
+  },
+  "evidence_copy": ".security/evidence/m6-native-cli-a02873f3dc5c421f913bf3cceec50991",
+  "source_unchanged": true,
+  "canonical_status": "PATCH_PROPOSED",
+  "removed_provider_result": {
+    "project": "Coding Security Protocol",
+    "command": "ai-patch",
+    "run_id": "20261009T115122Z-95373221620b4b699dab36cd3080f35a",
+    "finding_id": "SEC-0001",
+    "started_at": "2026-10-09T11:51:22.744718Z",
+    "attempts": [],
+    "result": "REVIEW_REQUIRED",
+    "exit_code": 20,
+    "terminal_state": "human_review",
+    "finding_closed": false,
+    "patch_applied": false,
+    "detail": "no valid AI proposal; human remediation required",
+    "finished_at": "2026-10-09T11:51:22.807677Z",
+    "report_reference": ".security/reports/20261009T115122Z-95373221620b4b699dab36cd3080f35a-ai-patch-report.json"
+  },
+  "verification_after_manual_apply": {
+    "exit_code": 20,
+    "closed_ids": [],
+    "gate": {
+      "project": "Coding Security Protocol",
+      "command": "gate",
+      "audit_version": 1,
+      "run_id": "20261009T115124Z-56d995349089444ab5b1712addfec95c",
+      "timestamp": "2026-10-09T11:51:24Z",
+      "notifications": [],
+      "policies": [
+        {
+          "policy_id": "TRUST",
+          "action": "REVIEW_REQUIRED",
+          "reason": "restricted-trust patch requires human review",
+          "finding_ids": [
+            "SEC-0001"
+          ]
+        },
+        {
+          "policy_id": "AI_REVIEW",
+          "action": "REVIEW_REQUIRED",
+          "reason": "canonical AI review requires human review; advisory approval cannot satisfy it",
+          "finding_ids": [
+            "SEC-0001"
+          ]
+        }
+      ],
+      "evidence_issues": [],
+      "finding_closure": false,
+      "input_reference": ".security/evidence/20261009T115123Z-7b3bdea70c304c0db76445b480a02cd2/gate-context.json",
+      "input_sha256": "30e35c69ccaa194e2fbafc4e902c9b91768e7d2e51b8be79c0368e26688815e0",
+      "closure_candidates": [
+        "SEC-0001"
+      ],
+      "closure_proof_reference": ".security/evidence/20261009T115123Z-7b3bdea70c304c0db76445b480a02cd2/verification-proof.json",
+      "closure_proof_sha256": "82bfbbf2f1a5a3a72e93e634d93bb1a12997d673d75b39d73fa699a66d36c1db",
+      "result": "REVIEW_REQUIRED",
+      "exit_code": 20,
+      "event": "merge",
+      "policy_sha256": "aefb7966031fb5f6b62c7741d39f60564a6f6195d8d36c4ee22b843dbb426e12",
+      "audit_indexed": true,
+      "report_reference": ".security/reports/20261009T115124Z-56d995349089444ab5b1712addfec95c-gate-report.json"
+    }
+  }
+}

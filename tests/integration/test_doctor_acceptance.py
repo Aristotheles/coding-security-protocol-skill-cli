@@ -73,7 +73,7 @@ class DoctorAcceptance(DoctorProject):
         self.assertEqual(self.invoke('doctor', '--json').returncode, 40)
 
     def test_later_commands_fail_closed(self):
-        for command in ('verify', 'gate', 'ai-patch'):
+        for command in ('ai-patch',):
             result = self.invoke(command, '--json')
             self.assertEqual(result.returncode, 50)
             self.assertEqual(json.loads(result.stdout)['result'], 'CONTRACT_ERROR')

@@ -21,3 +21,7 @@ ai:
   providers: []
 runtime_verify:
   mode: not_applicable
+stack:
+  tests:
+    argv: [python, -m, unittest, discover, -s, tests/unit, -v]
+    timeout_seconds: 120

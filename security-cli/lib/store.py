@@ -1,6 +1,7 @@
 """Canonical JSON is authoritative; SQLite is a replaceable derived index."""
 from datetime import datetime
 import os
+import hashlib
 from pathlib import Path
 import re
 import tempfile
@@ -89,6 +90,10 @@ def write_index(root, findings):
             for event in item['history']:
                 connection.execute('INSERT INTO finding_history(finding_id,timestamp,event) VALUES (?,?,?)',
                                    (item['id'], event['timestamp'], event.get('event', event['status'])))
+        # A normal finding update/rebuild must not erase gate audit or escalation
+        # deduplication. Durable gate reports rebuild these derived tables too.
+        from .gate_audit import index_audits
+        index_audits(connection, root)
         if connection.execute('PRAGMA foreign_keys').fetchone()[0] != 1 or connection.execute('PRAGMA foreign_key_check').fetchone():
             raise OSError('index foreign key verification failed')
         connection.commit()
@@ -105,9 +110,13 @@ def write_index(root, findings):
             temp.unlink()
 
 
-def update(root, run_id):
+def update(root, run_id, expected_hashes=None):
     root = Path(root).resolve()
     with store_lock(root):
+        if expected_hashes is not None and expected_hashes != {
+                p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                for p in sorted((root / '.security/findings').glob('*.json'))}:
+            raise ContractError('canonical state changed before coordinated rescan update')
         data = load_normalized(root, run_id)
         findings = load_findings(root)
         by_fp = {item['fingerprint']: item for item in findings}
@@ -142,6 +151,9 @@ def update(root, run_id):
                     if observed_time <= closed_time:
                         raise ContractError('historical scan cannot prove regression after closure')
                     existing.update(status='REOPENED', regression=True)
+                    if existing['category'] == 'hardcoded-secret':
+                        existing['remediation'] = {'rotation_required': True, 'rotation_confirmed': False,
+                                                  'confirmed_at': None, 'confirmed_by': None}
                     event = 'reopened'
                 existing.update(last_seen=observed, location=incoming['location'])
                 if LEVELS.index(incoming['severity']) > LEVELS.index(existing['severity']):
@@ -185,6 +197,44 @@ def show(root, finding_id):
     raise ContractError('finding does not exist in canonical JSON')
 
 
-def close_finding(*args, **kwargs):
-    # No production closure path until real M3/M4 deterministic checks exist.
-    raise ContractError('closure unavailable until actual verification and policy checks exist')
+def close_finding(root, proof_reference=None, gate_reference=None):
+    """Core-only closure with immutable verification proof and audited policy PASS."""
+    if not proof_reference or not gate_reference:
+        raise ContractError('verified evidence and audited gate proof required')
+    from . import verify, policy
+    from .scan import timestamp
+    root = Path(root).resolve()
+    with store_lock(root):
+        proof_path = safe_path(root, proof_reference, '.security/evidence')
+        gate_path = safe_path(root, gate_reference, '.security/reports')
+        proof = read_json(proof_path)
+        gate = read_json(gate_path)
+        if gate.get('result') != 'PASS' or gate.get('exit_code') != 0 or gate.get('closure_proof_reference') != proof_reference or gate.get('closure_proof_sha256') != verify.sha(proof_path):
+            raise ContractError('closure requires matching policy PASS and verification proof')
+        context = read_json(policy.reference(root, proof['context']))
+        if gate.get('input_sha256') != proof['context']['sha256'] or gate.get('closure_candidates') != proof.get('finding_ids'):
+            raise ContractError('gate input/candidates do not match closure proof')
+        candidates, proof = verify.closure_candidates(root, proof_reference, context)
+        connection = connect_database(root / '.security/security.db')
+        try:
+            row = connection.execute('SELECT result,report_reference FROM gate_runs WHERE run_id=?', (gate['run_id'],)).fetchone()
+            if row != ('PASS', gate_reference):
+                raise ContractError('policy decision has not been audited')
+        finally:
+            connection.close()
+        ids = proof['finding_ids']
+        committed = []
+        try:
+            for f in candidates:
+                if f['id'] not in ids:
+                    continue
+                f['history'].append(dict(timestamp=timestamp(), status='CLOSED', event='closed',
+                    verification_reference=proof_reference, gate_reference=gate_reference))
+                atomic_json(root / '.security/findings' / (f['id'] + '.json'), f)
+                committed.append(f['id'])
+            write_index(root, load_findings(root))
+        except Exception as exc:
+            if committed:
+                raise IndexWriteError('verified canonical closure saved; rebuild index to recover') from exc
+            raise
+    return {'ids': committed, 'canonical_written': True, 'index_rebuilt': True}

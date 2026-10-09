@@ -1,0 +1,254 @@
+[
+  {
+    "argv": [
+      "verify",
+      "--target",
+      "tests/fixtures/scanner-project",
+      "--json"
+    ],
+    "exit_code": 60,
+    "elapsed_seconds": 95.237,
+    "report": {
+      "project": "Coding Security Protocol",
+      "command": "verify",
+      "run_id": "20261009T105750Z-96b04b6324f04167ad01881dff95a174",
+      "started_at": "2026-10-09T10:57:50.405736Z",
+      "evidence": {
+        "static_scan": {
+          "type": "static_scan",
+          "source": "security-verify-scanners",
+          "state": "PASS",
+          "run_id": "20261009T105750Z-b94d7569f1e147d0b8fcddfa88c6920e",
+          "timestamp": "2026-10-09T10:57:57.656147Z",
+          "raw_reference": ".security/reports/20261009T105750Z-b94d7569f1e147d0b8fcddfa88c6920e-scan-report.json",
+          "sha256": "9fd49dd8966ee74f4a9d6136b4b3abd01ec5be220f3e46652054818917e30663",
+          "unresolved_ids": [
+            "SEC-0001",
+            "SEC-0002"
+          ]
+        },
+        "tests": {
+          "type": "tests",
+          "state": "PASS",
+          "source": "security-verify-command",
+          "run_id": "20261009T105750Z-96b04b6324f04167ad01881dff95a174",
+          "timestamp": "2026-10-09T10:59:18.556541Z",
+          "raw_reference": ".security/evidence/20261009T105750Z-96b04b6324f04167ad01881dff95a174/tests-receipt.json",
+          "sha256": "ad0ff8bb2964d88d941082ae7cf66ea75549b9f669d33f9a6b1f459216cb1da0"
+        },
+        "security_rescan": {
+          "type": "security_rescan",
+          "source": "security-verify-scanners",
+          "state": "FAIL",
+          "run_id": "20261009T105918Z-8194f94162954a58aa1b8d2456c9379b",
+          "timestamp": "2026-10-09T10:59:24.862422Z",
+          "raw_reference": ".security/reports/20261009T105918Z-8194f94162954a58aa1b8d2456c9379b-scan-report.json",
+          "sha256": "5bdbb8bf86cf7ed335d09d245721f4e0bfc1e905822c22a2a9c39f47082c82d9",
+          "unresolved_ids": [
+            "SEC-0001",
+            "SEC-0002"
+          ]
+        },
+        "runtime_verify": {
+          "type": "runtime_verify",
+          "state": "NOT_APPLICABLE",
+          "source": "security.config.yml",
+          "run_id": "20261009T105750Z-96b04b6324f04167ad01881dff95a174",
+          "timestamp": "2026-10-09T10:59:24.986790Z",
+          "reason": "runtime_verify.mode is explicitly not_applicable",
+          "raw_reference": ".security/evidence/20261009T105750Z-96b04b6324f04167ad01881dff95a174/runtime-not-applicable.json",
+          "sha256": "b9f5e20eb1b2814986c967d27d59a5763c2ecd9fe21f26ab865341bc9ef40a96"
+        }
+      },
+      "closed_ids": [],
+      "canonical_written": false,
+      "gate": {
+        "project": "Coding Security Protocol",
+        "command": "gate",
+        "audit_version": 1,
+        "run_id": "20261009T105925Z-5d770767c4ad49e0a7c3ce6acb36d170",
+        "timestamp": "2026-10-09T10:59:25Z",
+        "notifications": [],
+        "policies": [
+          {
+            "policy_id": "POL-005",
+            "action": "BLOCK",
+            "reason": "open secret or incomplete required rotation",
+            "finding_ids": [
+              "SEC-0001",
+              "SEC-0003"
+            ],
+            "playbook": ".security/playbooks/secret-leak.md"
+          }
+        ],
+        "evidence_issues": [
+          "security_rescan: failed"
+        ],
+        "finding_closure": false,
+        "input_reference": ".security/evidence/20261009T105750Z-96b04b6324f04167ad01881dff95a174/gate-context.json",
+        "input_sha256": "ebc841cc3c3c6653781495c60c1040619552b79993c58add8e3df782750d9f42",
+        "result": "BLOCK",
+        "exit_code": 10,
+        "event": "merge",
+        "policy_sha256": "aefb7966031fb5f6b62c7741d39f60564a6f6195d8d36c4ee22b843dbb426e12",
+        "audit_indexed": true,
+        "report_reference": ".security/reports/20261009T105925Z-5d770767c4ad49e0a7c3ce6acb36d170-gate-report.json"
+      },
+      "proof_reference": ".security/evidence/20261009T105750Z-96b04b6324f04167ad01881dff95a174/verification-proof.json",
+      "gate_context_reference": ".security/evidence/20261009T105750Z-96b04b6324f04167ad01881dff95a174/gate-context.json",
+      "exit_code": 60,
+      "result": "VERIFY_ERROR",
+      "finished_at": "2026-10-09T10:59:25.319751Z",
+      "report_reference": ".security/reports/20261009T105750Z-96b04b6324f04167ad01881dff95a174-verify-report.json"
+    }
+  },
+  {
+    "argv": [
+      "doctor",
+      "--json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.302,
+    "report": {
+      "project": "Coding Security Protocol",
+      "command": "doctor",
+      "run_id": "20261009T105925Z-61ffbd77",
+      "timestamp": "2026-10-09T10:59:25Z",
+      "result": "PASS",
+      "exit_code": 0,
+      "checks": [
+        {
+          "name": "python",
+          "state": "PASS",
+          "code": 0,
+          "detail": "3.14.5"
+        },
+        {
+          "name": "structure",
+          "state": "PASS",
+          "code": 0,
+          "detail": "valid"
+        },
+        {
+          "name": "parser_dependencies",
+          "state": "PASS",
+          "code": 0,
+          "detail": "valid"
+        },
+        {
+          "name": "security_config",
+          "state": "PASS",
+          "code": 0,
+          "detail": "valid"
+        },
+        {
+          "name": "policy",
+          "state": "PASS",
+          "code": 0,
+          "detail": "parsed definitions; policy evaluation is outside M0"
+        },
+        {
+          "name": "finding_schema",
+          "state": "PASS",
+          "code": 0,
+          "detail": "valid"
+        },
+        {
+          "name": "ai_provider_registry",
+          "state": "PASS",
+          "code": 0,
+          "detail": "syntax validated; no adapter executed"
+        },
+        {
+          "name": "runtime_verifier_config",
+          "state": "PASS",
+          "code": 0,
+          "detail": "syntax validated; no adapter executed"
+        },
+        {
+          "name": "semgrep",
+          "state": "PASS",
+          "code": 0,
+          "detail": "executable available; not executed"
+        },
+        {
+          "name": "trivy",
+          "state": "PASS",
+          "code": 0,
+          "detail": "executable available; not executed"
+        },
+        {
+          "name": "runtime_write_access",
+          "state": "PASS",
+          "code": 0,
+          "detail": "valid"
+        },
+        {
+          "name": "sqlite_initialization",
+          "state": "PASS",
+          "code": 0,
+          "detail": "initialized; foreign_keys=ON; schema and integrity checked"
+        }
+      ]
+    }
+  },
+  {
+    "argv": [
+      "gate",
+      "--event",
+      "release",
+      "--json"
+    ],
+    "exit_code": 10,
+    "elapsed_seconds": 0.349,
+    "report": {
+      "project": "Coding Security Protocol",
+      "command": "gate",
+      "audit_version": 1,
+      "run_id": "20261009T105925Z-387fc977fe2342c88f6136726bcb0c0f",
+      "timestamp": "2026-10-09T10:59:25Z",
+      "notifications": [],
+      "policies": [
+        {
+          "policy_id": "POL-005",
+          "action": "BLOCK",
+          "reason": "open secret or incomplete required rotation",
+          "finding_ids": [
+            "SEC-0001",
+            "SEC-0003"
+          ],
+          "playbook": ".security/playbooks/secret-leak.md"
+        }
+      ],
+      "evidence_issues": [
+        "gate context missing",
+        "static_scan: missing",
+        "tests: missing",
+        "security_rescan: missing",
+        "runtime_verify: missing"
+      ],
+      "finding_closure": false,
+      "result": "BLOCK",
+      "exit_code": 10,
+      "event": "release",
+      "policy_sha256": "aefb7966031fb5f6b62c7741d39f60564a6f6195d8d36c4ee22b843dbb426e12",
+      "audit_indexed": true,
+      "report_reference": ".security/reports/20261009T105925Z-387fc977fe2342c88f6136726bcb0c0f-gate-report.json"
+    }
+  },
+  {
+    "argv": [
+      "ai-patch",
+      "--json"
+    ],
+    "exit_code": 50,
+    "elapsed_seconds": 0.141,
+    "report": {
+      "project": "Coding Security Protocol",
+      "command": "ai-patch",
+      "result": "CONTRACT_ERROR",
+      "exit_code": 50,
+      "detail": "command not implemented in M4"
+    }
+  }
+]
