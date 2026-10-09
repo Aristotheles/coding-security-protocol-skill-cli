@@ -1,4 +1,47 @@
 # Coding Security Protocol — ortak devir
+Güncelleme: 2026-10-09 15:05 Europe/Istanbul
+Aktif ajan: yok; son uygulama/doğrulama Codex
+Durum: M0–M6 tamamlandı; son Git incelemesi ve yerel implementation commit tamam
+Hedef ajan/model: başka ajan çalıştırılmadı; model değişikliği yok
+
+## Kullanıcı hedefi ve yetki sınırları
+Son Git incelemesi/commit hazırlığı önerisi ardından devam talimatı yerel commit kapsamında işlendi. Yeni feature/dependency/mimari/policy değişikliği/ajan/CI/push/deploy yok. Eski M0–M2 snapshot push yetkisi yeni push için kullanılmadı.
+
+## Güncel durum ve tamamlananlar
+M0–M6 [x]. M3–M6 code, tests, schemas, docs, canonical observation history ve milestone kanıtları 54 dosyalı implementation commit’e alındı. Kodda bu tur değişiklik yok. Runtime DB/raw/evidence/tools/local agent config ignored kaldı. Handoff/son inceleme kaydı ayrı docs commit ile kapanır; son documentation HEAD git log -1 ile ölçülür, self-referencing hash uydurulmaz.
+
+## Git durumu ve değişen dosyalar
+main implementation commit: c4860c59d9c36b74d495f80cf8b9e22ff4610dae
+feat: implement M3-M6 security policy and AI controls
+Implementation sonrası git status --porcelain boş; yalnız bu kapanışta HANDOFF.md ve FINAL-GIT-REVIEW.md belge güncellemesi yapıldı. Bunlar separate docs commit’e alınır. Read-only git ls-remote main: fc0b20146ec418ef803834b59568e973cd3201bf. Push yapılmadı.
+
+## Doğrulama kanıtları
+Codex 2026-10-09 15:05 Europe/Istanbul: Commit öncesi fresh 162 test OK/0 (269.406 sn), actual security doctor PASS/0, compileall/AST/whitespace/no-shell/JSON/diff ve SQLite integrity/FK PASS. İncelenen source/schema/config hash’leri test/staging boyunca aynı. 54 dosyalı implementation commit c4860c5 oluşturuldu; hemen sonrası git status --porcelain boş. Yeni kod değişikliği yapılmadı.
+.agent/FINAL-GIT-REVIEW.md, .agent/commit-candidates.json, .agent/commit-preflight.json.
+Önceki M6 fresh suite 162/250.324 sn tarihsel; bu tur fresh suite 162/269.406 sn. Staged/index list reviewed manifest ile aynı; yalnız normal Git CRLF dönüşümü var. Old project name güncel başlık/contract docs’ta yok. Protected invariants/requirements diff boş. Bu targeted review kapsamlı güvenlik audit değildir.
+
+## Kalan işler ve engeller
+M0–M6 kabul tamam; iki live bağımsız AI reviewer ve diğer OS/Python doğrulanmadı. Secret screening hedefli, provenance yerel trust; human approval/rotation/delivery yok. Bilerek açık fixture bulguları release gate BLOCK/10 nedeni. Production release PASS veya deploy iddiası yok. GitHub push yapılmadı.
+
+## Sıradaki tek işlem
+Kullanıcı talimatıyla GitHub’a push; bu tur yapılmadı. Yerel kapanış kaydı ayrı docs commit’e alınır.
+
+## Arka plan süreçleri ve dış işler
+Aktif test/scanner/provider/ajan yok; fresh suite tamamlandı. Remote yalnız salt-okunur sorgulandı. Push/deploy/notification yok.
+
+## Ortak hafıza bağlantıları ve eşitleme durumu
+<OBSIDIAN_VAULT>
+Projeler/Coding Security Protocol/Coding Security Protocol.md
+Günlük/2026-10-09 — Coding Security Protocol.md
+Kararlar.md#2026-10-09 — Coding Security Protocol son Git incelemesi ve yerel commit
+Ana not/günlük/dizin/karar implementation commit ve fresh preflight ile güncellenir ve yeniden okunarak doğrulanır. Docs commit sonrası final HEAD/clean-tree ölçümü kalıcı kayda eklenir.
+
+## Devir geçmişi
+2026-10-09 15:05 Europe/Istanbul — Codex yerel implementation commit oluşturdu; docs kapanışı sonrası durulur. Başka ajana devir yok.
+
+## Önceki kayıt (korundu)
+
+# Coding Security Protocol — ortak devir
 Güncelleme: 2026-10-09 14:56 Europe/Istanbul
 Aktif ajan: yok; son uygulama/doğrulama Codex
 Durum: M6 tamamlandı; M0–M6 uygulama/kabul tamam, duruldu

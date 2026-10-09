@@ -36,3 +36,10 @@ security audit or production release-readiness claim. M0–M6 acceptance remains
 Next allowed step: finish local commit/handoff, then stop. GitHub push requires a new
 user instruction. Final commit IDs and clean-tree result are recorded in handoff and
 Obsidian after implementation commit; no future completion is claimed here.
+
+## Local implementation commit
+
+2026-10-09 15:05 Europe/Istanbul — c4860c59d9c36b74d495f80cf8b9e22ff4610dae
+
+54 reviewed files committed; immediate post-commit worktree was clean. No push.
+Closing handoff/record updates use a separate documentation-only commit.
