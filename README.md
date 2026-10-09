@@ -315,7 +315,7 @@ Known boundaries:
 
 Keep patches small/scoped, include meaningful implementation tests, preserve fail-closed behavior and use only fake credentials in fixtures. Protected contracts require an explicit human task. Avoid opportunistic dependencies/architecture changes.
 
-**License:** no `LICENSE` file currently exists. This README does not assign a license.
+**License:** [MIT](LICENSE). Third-party scanners (Semgrep, Trivy) are separate tools under their own licenses and are not bundled in this repository.
 
 ---
 
@@ -657,7 +657,7 @@ Mevcut sınırlar:
 
 Yamaları küçük ve görev kapsamında tutun, anlamlı uygulama testleri ekleyin, fail-closed koruyun ve fixture'da yalnız sahte kimlik bilgisi kullanın. Korunan sözleşme açık insan görevi ister. Gereksiz bağımlılık/mimari değişikliği yapmayın.
 
-**Lisans:** henüz `LICENSE` yoktur. README lisans tanımlamaz.
+**Lisans:** [MIT](LICENSE). Üçüncü taraf tarayıcılar (Semgrep, Trivy) kendi lisanslarına tabi ayrı araçlardır ve bu depoya dahil edilmemiştir.
 
 ---
 

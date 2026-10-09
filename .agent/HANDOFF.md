@@ -1,4 +1,55 @@
 # Coding Security Protocol — ortak devir
+Güncelleme: 2026-10-09 17:24 Europe/Istanbul
+Aktif ajan: Claude Code (Sonnet 5.5)
+Durum: devralındı; durum ölçüldü, yazma kapsamı bekliyor
+Hedef ajan/model: Claude Code, claude-sonnet-5-5 (oturum bilgisinden); başka ajan/model seçilmedi
+
+## Devralma kaydı (Claude Code, 17:24)
+Kullanıcı "projeyi ortak hafızadan devral" dedi. Codex'in 17:00 devir kaydı, protokol, AGENTS.md, Obsidian rehber/ana not/günlük/Kararlar/Dizin okundu. Codex yazmayı bırakmıştı; kullanıcı devri istediği için devir kabul edildi. Tek yazan ajan Claude Code.
+Bu turda ölçülenler (Claude Code, 17:24): `git remote -v` fetch/push = `.../coding-security-protocol-skill-cli.git` PASS; `git ls-remote origin refs/heads/main` = `800d150` = yerel HEAD PASS (uzak hash eşliği artık ölçüldü); `git status --short` yalnız ` M .agent/HANDOFF.md` (Codex devir kaydı, commit edilmemiş). Test, doctor, full suite: koşulmadı (DOĞRULANMADI); yalnız belge/metadata devri, kod değişmedi.
+Eski URL taraması (git grep): README.md/README.tr.md ve diğer güncel belgelerde eski URL YOK. Kalanlar tarihsel: `.agent/GITHUB-PUSH.md:7` (ilk push kanıtı) ve bu dosyadaki eski devir kayıtları — silinmez. Obsidian'da tek güncel eski bağlantı: ana not "Kaynaklar ve bağlantılar" GitHub satırı; Dizin ve Kararlar zaten yeni adreste.
+Yapılan: Obsidian ana notundaki güncel GitHub bağlantısı yeni URL'ye taşındı ve geri okunarak doğrulandı (eski satır tarihsel olarak korundu). Repo dosyalarında URL değişikliği gerekmedi.
+Sıradaki tek işlem: kullanıcı yetkisiyle bu devir kaydının commit/push edilmesi (commit ve push yetkisi bu turda verilmedi). Sonra yeni kullanıcı görevi.
+Arka plan süreci yok; push/deploy yapılmadı.
+
+---
+
+# Coding Security Protocol — ortak devir (önceki kayıt, Codex, korundu)
+Güncelleme: 2026-10-09 17:00 Europe/Istanbul
+Aktif ajan: yok; Codex devir kaydını hazırladı ve yazmayı bıraktı
+Durum: devre hazır; GitHub repo adı değişti, eski URL metinleri belgelerde henüz güncellenmedi
+Hedef ajan/model: belirtilmedi; doğrulama: yapılmadı
+
+## Kullanıcı hedefi ve yetki sınırları
+Kullanıcı, GitHub repo adresinin Skill + CLI tanımıyla uyumlu değiştirilmesini istedi. İstek kesilmeden önce GitHub rename ve yerel `origin` güncellemesi gerçekleşti. Kullanıcı ardından kota nedeniyle devir dosyalarının hemen işlenmesini istedi. Yeni ajan başlatma, yeni model seçimi, commit, push veya deploy için yeni yetki verilmedi.
+
+## Güncel durum ve tamamlananlar
+GitHub repo artık private `Aristotheles/coding-security-protocol-skill-cli` ve doğrulanmış URL `https://github.com/Aristotheles/coding-security-protocol-skill-cli`. Yerel `origin` fetch/push URL'si aynı yeni adrese işaret ediyor. `gh repo view` yeni ad, URL ve private durumu ile başarılı döndü. Kesilen işlemden önceki `gh repo rename` adımı tamamlanmış; henüz kaynak veya Obsidian içindeki eski GitHub URL metinleri güncellenmedi.
+
+## Git durumu ve değişen dosyalar
+HEAD: `800d150` (`docs: label README titles as Agent Skill and CLI`). `git status --short` boştu; bu devir kaydı şu anda tek yerel değişikliktir. Önceki commit GitHub'ın yeniden adlandırılmış aynı repository history'sinde bulunur. Uzak main hash eşliği bu devir öncesinde yeniden ölçülmedi; `git ls-remote` henüz çalıştırılmadı.
+
+## Doğrulama kanıtları
+2026-10-09 Europe/Istanbul, Codex: `git remote -v` yeni URL PASS; `gh repo view --json nameWithOwner,url,isPrivate` PASS. Bu devir turunda test, doctor, full suite, `git ls-remote`, dokümantasyon URL kontrolü ve GitHub web UI kontrolü: DOĞRULANMADI. Bu yalnız metadata/devir durumudur; uygulama güvenlik kabulünü değiştirmez.
+
+## Kalan işler ve engeller
+Yeni ajan yalnız kullanıcı yetkisiyle devam ederse, önce `git status`, `git diff`, `git ls-remote origin refs/heads/main` ile durumu tekrar ölçmeli. Ardından eski `https://github.com/Aristotheles/coding-security-protocol` metinlerini hedefli olarak README, `.agent` kanıtları ve Obsidian proje kayıtlarında yeni URL'ye güncellemek gerekip gerekmediğini belirlemeli. Tarihsel kanıtların eski URL'si sadece geçmişi anlatıyorsa silinmemeli; güncel bağlantılar yeni URL olmalı. Bu devir kaydı commit edilmemiştir.
+
+## Sıradaki tek işlem
+Yeni ajan, önce bu devir kaydını kabul edip çalışma ağacını ve yeni uzak main hash'ini doğrulasın; sonra yalnız onaylı repo-adresi belgelerini güncelleme kapsamını ele alsın.
+
+## Arka plan süreçleri ve dış işler
+Aktif arka plan süreci, başka ajan, AI oturumu veya deploy yok. Kesilen terminal çağrısının sonrasında doğrulanan dış değişiklik: GitHub repository rename.
+
+## Ortak hafıza bağlantıları ve eşitleme durumu
+Obsidian ana not, günlük, karar ve dizin bu devirle birlikte yeni URL/devir durumu için güncelleniyor. Kaynak dosyalar kasaya taşınmaz.
+
+## Devir geçmişi
+2026-10-09 17:00 Codex — kullanıcı kota/devir talebiyle yazmayı bıraktı. GitHub rename tamamlandı; belge URL uyarlaması ve commit/push sonraki ajana bırakıldı.
+
+---
+
+# Coding Security Protocol — ortak devir
 Güncelleme: 2026-10-09 16:55 Europe/Istanbul
 Aktif ajan: yok; son çalışma Codex
 Durum: iki README sunum başlığı güncellendi; yetkili commit/push adımı

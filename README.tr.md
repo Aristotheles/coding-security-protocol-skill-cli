@@ -311,7 +311,7 @@ Mevcut sınırlar:
 
 Yamaları küçük ve görev kapsamında tutun, anlamlı uygulama testleri ekleyin, fail-closed koruyun ve fixture'da yalnız sahte kimlik bilgisi kullanın. Korunan sözleşme açık insan görevi ister. Gereksiz bağımlılık/mimari değişikliği yapmayın.
 
-**Lisans:** henüz `LICENSE` yoktur. README lisans tanımlamaz.
+**Lisans:** [MIT](LICENSE). Üçüncü taraf tarayıcılar (Semgrep, Trivy) kendi lisanslarına tabi ayrı araçlardır ve bu depoya dahil edilmemiştir.
 
 ---
 
