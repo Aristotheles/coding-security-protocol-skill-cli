@@ -1,4 +1,100 @@
 # Coding Security Protocol — ortak devir
+Güncelleme: 2026-10-09 15:52 Europe/Istanbul
+Aktif ajan: Codex
+Durum: skill/bağlantı/README tamam; commit ve GitHub push hazırlanıyor
+Hedef ajan/model: başka ajan/model kullanılmadı
+
+## Kullanıcı hedefi ve yetki sınırları
+Serena/MCP-RAG eksiklerini tamamla; üç ajan bağlantıları; detaylı skill; README; commit ve GitHub push açıkça yetkili. Public görünürlük/deploy/AI ajan başlatma/otomatik kota servisi yok.
+
+## Güncel durum ve tamamlananlar
+Python Serena fresh process sembolleri PASS. Zero-Waste gerçek indeks/sym_resolve/11 satır okuma PASS. Codex/Claude/Antigravity kayıtlı MCP entry fresh stdio çağrıları ve Serena diğer client contexts PASS. Global skill tam kopyaları byte eş. Canonical skill 4 koşullu ref ile detaylı; Claude wrapper ve AGENTS/CLAUDE/GEMINI yönlendirmesi. README.md/README.tr.md tam kullanım/token/sınırlar içeriyor.
+
+## Git durumu ve değişen dosyalar
+Başlangıç HEAD 5212eb3. Önceki README değişiklikleri korunup bu task'a dahil edildi. Yeni skill/guidance, AGENTS adoption, gitignore, READMEs, yerel doğrulama/devir kanıtları commit adayı. Core/schema/policy/config/MVP/SECURITY_AGENT/dependency aynı. Machine settings/backups/index/raw logs ignored veya repo dışı.
+
+## Doğrulama kanıtları
+Fresh 162 test OK/0 (217.410 sn); actual doctor PASS/0 (20261009T125052Z-b1c88480); skill creator 2 validate PASS; 5 client/context MCP query PASS; 3 user skill copies byte-equal; README/ref/UTF-8/diff ve hedefli secret signature check PASS.
+.agent/SKILL-INTEGRATION-VERIFICATION.md, .agent/client-connection-probes.json, .agent/skill-doctor.json.
+
+## Kalan işler ve engeller
+Canlı 3 app UI discovery/handoff ve native Claude/Antigravity ai-patch köprüleri doğrulanmadı. Otomatik kota/app switching yok. Açık istemci eski MCP cache için refresh/new session gerekebilir. Code tools index sandbox/security evidence değildir. Measured token saving yok; OPEN fixture gate BLOCK bekleniyor.
+
+## Sıradaki tek işlem
+İncelenen değişiklikleri commit ve GitHub push et; hash/remote eşliğini doğrula.
+
+## Arka plan süreçleri ve dış işler
+Full suite ve probe süreçleri bitti; başka ajan/AI/deploy/notification yok.
+
+## Ortak hafıza bağlantıları ve eşitleme durumu
+Obsidian ana not/günlük/karar/dizin güncellendi; canlı template başlıkları/UTF-8/bağlantılar tekrar okunarak doğrulandı. Push sonrası gerçek hash ile kapanış yapılır.
+
+## Devir geçmişi
+2026-10-09 15:52 Codex — aşağıdaki eski no-commit/no-push kayıtları tarihsel; güncel user commit/push yetkisi bu task'ta verildi.
+
+---
+
+# Coding Security Protocol — ortak devir
+Güncelleme: 2026-10-09 15:28 Europe/Istanbul
+Aktif ajan: yok; son çalışma Codex
+Durum: ayrı Türkçe README tamamlandı ve doğrulandı
+
+## Kullanıcı hedefi ve yetki sınırları
+Kullanıcı İngilizce içeriğin Türkçe çevirisini ayrıca istedi. README.tr.md oluşturuldu; ana README üstüne belirgin bağlantı eklendi. Kod/policy/config/milestone/commit/push/deploy/başka ajan yok.
+
+## Güncel durum, Git ve kanıt
+HEAD 5212eb3. README.md/HANDOFF.md modified; README.tr.md ve önceki README-VERIFICATION.md/readme-doctor.json untracked. UTF-8, dengeli fences, anchor/local link, BTC eşliği ve diff check PASS. Bu tur doctor/full suite NOT RUN; önceki kanıtlar tarihli korunuyor.
+
+## Kalan işler ve sıradaki tek işlem
+Kullanıcı README.tr.md'yi inceler; GitHub gönderimi yapılmadı. Önceki ürün sınırları geçerli.
+
+## Arka plan ve ortak hafıza
+Aktif süreç/başka ajan yok. Obsidian ana not/günlük/karar/dizin canlı şablonlarla güncellendi ve tekrar okunarak doğrulandı.
+
+## Devir geçmişi
+Önceki kayıtlar aşağıda korunur; bu tur başka ajana devir yok.
+
+---
+
+# Coding Security Protocol — ortak devir
+Güncelleme: 2026-10-09 15:23 Europe/Istanbul
+Aktif ajan: yok; son çalışma Codex
+Durum: iki dilli ayrıntılı README tamamlandı ve FAST doğrulandı
+Hedef ajan/model: belirtilmedi; başka ajan/model kullanılmadı
+
+## Kullanıcı hedefi ve yetki sınırları
+İngilizce/Türkçe ayrıntılı tek README ve diğer repolardan Patreon/BTC/sosyal bağlantılar. Yalnız belge ve ortak hafıza kaydı; yeni code/policy/schema/dependency/milestone/commit/push/deploy yok.
+
+## Güncel durum ve tamamlananlar
+README.md iki tam dil bölümü, ortak destek/sosyal bölüm, kurulum/CLI/config/policy/AI/storage/lifecycle/test/sınırlar içerir. 8 URL kaynak README metinleriyle eşleşti; BTC 3 repo ve Bech32 checksum ile doğrulandı. Lisans uydurulmadı; mevcut LICENSE yok. M0–M6 durumları değişmedi.
+
+## Git durumu ve değişen dosyalar
+HEAD 5212eb39cf7fba12be06c39c0c5838579f04359a. README.md ve HANDOFF.md modified; README-VERIFICATION.md ve readme-doctor.json yeni. Önceki iki yerel commit push bekliyor; bu tur commit/push yok. Eski temiz çalışma ağacı kaydı önceki snapshot'tır.
+
+## Doğrulama kanıtları
+65 link/internal anchor/local target, UTF-8/fence, iki config örneği actual validator, 8 URL kaynak eşliği ve BTC checksum PASS. Actual doctor PASS/0 (20261009T122341Z-91a9ab0d); CLI --help /0. İlk Markdown trailing-space uyarıları düzeltildi, diff check tekrar PASS. Fresh full suite bu belgeler turunda çalıştırılmadı; 162/269.406s önceki commit doğrulamasıdır.
+.agent/README-VERIFICATION.md; .agent/readme-doctor.json.
+
+## Kalan işler ve engeller
+Sosyal hesapların HTTP erişimi/oturumu ve görsel browser render doğrulanmadı; para transferi yapılmadı. Semgrep resmî başlangıç sayfası web tool redirect nedeniyle alınamadı; bozuk bağlantı olduğu iddia edilmez. Önceki ürün sınırları/OPEN fixture gate BLOCK korunuyor.
+
+## Sıradaki tek işlem
+Kullanıcının README'yi incelemesi. GitHub gönderimi yeni ilgili kullanıcı talimatıyla yapılır.
+
+## Arka plan süreçleri ve dış işler
+Aktif ajan/scanner/provider/servis yok; AI/donation/push/deploy yapılmadı.
+
+## Ortak hafıza bağlantıları ve eşitleme durumu
+Kasa <OBSIDIAN_VAULT>.
+Ana not Projeler/Coding Security Protocol/Coding Security Protocol.md; günlük Günlük/2026-10-09 — Coding Security Protocol.md.
+Obsidian ana not/günlük/karar/dizin güncellendi; dosyalar tekrar okunarak UTF-8, güncel şablon başlıkları ve proje/günlük/karar bağlantıları doğrulandı.
+
+## Devir geçmişi
+2026-10-09 15:23 — Codex: README belge işi tamamlandı; başka ajana devir yok. Önceki kayıt aşağıda tarihsel korunur.
+
+---
+
+# Coding Security Protocol — ortak devir
 Güncelleme: 2026-10-09 15:05 Europe/Istanbul
 Aktif ajan: yok; son uygulama/doğrulama Codex
 Durum: M0–M6 tamamlandı; son Git incelemesi ve yerel implementation commit tamam

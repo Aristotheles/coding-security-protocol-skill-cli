@@ -1,0 +1,31 @@
+{
+  "checks": {
+    "Claude MCP": {
+      "state": "PASS",
+      "tool": "sym_resolve",
+      "real_mcp_call": true
+    },
+    "Antigravity MCP": {
+      "state": "PASS",
+      "tool": "sym_resolve",
+      "real_mcp_call": true
+    },
+    "Codex MCP": {
+      "state": "PASS",
+      "tool": "sym_resolve",
+      "real_mcp_call": true
+    },
+    "Serena claude-code": {
+      "state": "PASS",
+      "tool": "get_symbols_overview",
+      "real_mcp_call": true
+    },
+    "Serena antigravity": {
+      "state": "PASS",
+      "tool": "get_symbols_overview",
+      "real_mcp_call": true
+    }
+  },
+  "live_application_discovery": "NOT VERIFIED",
+  "automatic_quota_switch": "NOT IMPLEMENTED"
+}

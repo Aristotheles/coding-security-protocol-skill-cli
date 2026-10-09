@@ -489,3 +489,12 @@ M0 — Bootstrap & Doctor
 ```
 
 Complete M0, test it, report, and stop.
+
+# 27. Adopted Workflow Skill
+
+For implementation, remediation and verification tasks in this project, load
+`.agents/skills/coding-security-protocol/SKILL.md` and only the references needed
+for the task. It orchestrates existing controls; it does not change milestone
+scope, security invariants or human authorization. Any supported agent may use it
+independently. Optional code intelligence and memory never replace test/scanner/
+runtime/policy evidence. Inspect current handoff and Git before taking over writes.

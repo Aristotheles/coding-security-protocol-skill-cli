@@ -21,3 +21,12 @@ __pycache__/
 # Local agent configuration and incomplete development snapshots.
 .serena/
 .agent/m2-debug-initial/
+
+# Machine-specific MCP paths are local; distributable skills remain tracked.
+.codex/config.toml
+.agents/mcp_config.json
+
+# Local raw tool/test diagnostics; summarized verification remains tracked.
+.agent/skill-full-tests.log
+.agent/serena-probe.json
+.agent/zero-waste-probe.json
