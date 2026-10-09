@@ -1,7 +1,7 @@
 <a id="top"></a>
 # Coding Security Protocol v1.0
 
-**Deterministik güvenlik kanıtları, politika kapıları ve isteğe bağlı yapay zekâ düzeltme önerileri.**
+**Claude Code, Codex ve Antigravity ile kodlama sırasında kullanılan bir güvenlik protokolü ve ajan skill’i.**
 
 **Aristotheles / Vibe Hoca** tarafından geliştirilmektedir.
 
@@ -28,7 +28,9 @@ Bu dosya, İngilizce README içeriğinin tam Türkçe karşılığıdır.
 <a id="tr-overview"></a>
 ### Genel bakış ve mimari
 
-Coding Security Protocol; tarayıcı çıktısını izlenebilir güvenlik bulgusuna dönüştüren, açık politikaları değerlendiren ve kapanıştan önce deterministik doğrulama isteyen Python CLI aracıdır. **AI sağlayıcısı tanımlanmadan** kullanılabilir.
+Coding Security Protocol, uygulama geliştirirken kullanılan bir güvenlik protokolüdür. Claude Code, Codex ve Antigravity’nin her birinin bağımsız kullanabileceği bir ajan skill’i ve güvenlik kontrollerini çalıştıran Python CLI aracı sunar. İş akışı, kod değişikliklerini tarama, test, doğrulama ve politika kontrolleriyle denetler.
+
+CLI, tarayıcı çıktısını izlenebilir güvenlik bulgusuna dönüştürür, açık politikaları değerlendirir ve bulgu kapanışından önce deterministik doğrulama ister. **AI sağlayıcısı tanımlanmadan** kullanılabilir. Skill’i yüklemek tek başına projeyi yapılandırmaz veya güvenliği garanti etmez; gerekli kurulum ve doğrulamalar yine uygulanır.
 
 Ortam tanılama, gerçek Semgrep/Trivy çalıştırma, ham kanıt saklama, SARIF normalizasyonu, kararlı parmak izi, tekrarları birleştirme ve kalıcı `SEC-XXXX` kimlikleri sunar. YAML kapıları, test/tekrar tarama/runtime kanıtları ve AI önerileri denetlenebilir bulgu geçmişine bağlanır.
 

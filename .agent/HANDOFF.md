@@ -1,4 +1,23 @@
 # Coding Security Protocol — ortak devir
+Güncelleme: 2026-10-09 16:53 Europe/Istanbul
+Aktif ajan: yok; son çalışma Codex
+Durum: proje tanımı düzeltildi; README commit/push hazırlanıyor
+
+## Kullanıcı hedefi ve yetki sınırları
+GitHub açıklamasını ve İngilizce/Türkçe README tanımını açıkça kodlama sırasında kullanılan güvenlik protokolü ve ajan skill’i olarak düzelt; commit/push yetkili. Başka ajan/deploy yok.
+
+## Güncel durum ve doğrulama kanıtları
+GitHub description iki dilli güncellendi ve gh repo view ile yeniden okundu; private görünürlük aynı. README.md EN/TR ve README.tr.md girişleri üç bağımsız ajan, protokol, skill ve CLI ayrımını açıklıyor. Skill kurulumu tek başına güvenlik garantisi değildir. FAST: UTF-8/fences/link ve anchor korunması, EN/TR tanım, Türkçe kopya eşliği ve git diff --check PASS. Kod/config/policy/skill değişmedi; full suite/doctor bu belge turunda NOT RUN. Ayrıntı .agent/DESCRIPTION-VERIFICATION.md.
+
+## Git durumu ve sıradaki tek işlem
+Başlangıç HEAD 0e3f083; başlangıç tree temiz. README.md, README.tr.md ve bu devir/doğrulama kayıtları commit/push edilir, gerçek uzak main eşliği ölçülür; final hash Obsidian’da kaydedilir.
+
+## Kalan işler, arka plan ve ortak hafıza
+Yeni özellik veya ajan oturumu yok. Önceki ürün sınırları geçerli. Obsidian canlı şablonları okundu; yayın sonunda ana not/günlük/karar/dizin güncellenip doğrulanır. Sonraki işlem yeni kullanıcı görevidir.
+
+---
+
+# Coding Security Protocol — ortak devir
 Güncelleme: 2026-10-09 15:55 Europe/Istanbul
 Aktif ajan: yok; son çalışma Codex
 Durum: skill/bağlantı/README tamam; implementation GitHub push ve hash eşliği doğrulandı

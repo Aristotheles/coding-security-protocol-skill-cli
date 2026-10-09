@@ -3,8 +3,8 @@
 
 > **Türkçe tam dokümantasyon: [README.tr.md](README.tr.md)** · [English documentation](#english)
 
-**Deterministic security evidence, policy gates and optional AI proposals.**
-**Deterministik güvenlik kanıtları, politika kapıları ve isteğe bağlı AI önerileri.**
+**A security protocol and agent skill for use during software development with Claude Code, Codex and Antigravity.**
+**Claude Code, Codex ve Antigravity ile kodlama sırasında kullanılan bir güvenlik protokolü ve ajan skill’i.**
 
 [English](#english) · [Türkçe](#turkce) · [Support / Destek](#support) · [Social / Sosyal medya](#social)
 
@@ -32,7 +32,9 @@ Developed by **Aristotheles / Vibe Hoca**.
 <a id="en-overview"></a>
 ### Overview and architecture
 
-Coding Security Protocol is a Python CLI that turns scanner output into traceable security findings, evaluates explicit policies and requires deterministic verification before findings can close. It remains usable with **no AI providers configured**.
+Coding Security Protocol is a security protocol for use while developing applications. It includes an agent skill that Claude Code, Codex and Antigravity can each use independently, and a Python CLI that runs security controls. The workflow checks code changes through scanning, tests, verification and policy evaluation.
+
+The CLI turns scanner output into traceable security findings, evaluates explicit policies and requires deterministic verification before findings can close. It remains usable with **no AI providers configured**. Installing the skill alone does not configure a project or guarantee security; the required setup and verification still apply.
 
 It provides environment diagnostics, real Semgrep/Trivy execution, retained raw evidence, SARIF normalization, stable fingerprints, deduplication and persistent `SEC-XXXX` IDs. YAML policy gates, tests/rescans/runtime evidence and optional AI proposals share auditable finding history.
 
@@ -372,7 +374,9 @@ Official installation sources: [Codex](https://learn.chatgpt.com/docs/build-skil
 <a id="tr-overview"></a>
 ### Genel bakış ve mimari
 
-Coding Security Protocol; tarayıcı çıktısını izlenebilir güvenlik bulgusuna dönüştüren, açık politikaları değerlendiren ve kapanıştan önce deterministik doğrulama isteyen Python CLI aracıdır. **AI sağlayıcısı tanımlanmadan** kullanılabilir.
+Coding Security Protocol, uygulama geliştirirken kullanılan bir güvenlik protokolüdür. Claude Code, Codex ve Antigravity’nin her birinin bağımsız kullanabileceği bir ajan skill’i ve güvenlik kontrollerini çalıştıran Python CLI aracı sunar. İş akışı, kod değişikliklerini tarama, test, doğrulama ve politika kontrolleriyle denetler.
+
+CLI, tarayıcı çıktısını izlenebilir güvenlik bulgusuna dönüştürür, açık politikaları değerlendirir ve bulgu kapanışından önce deterministik doğrulama ister. **AI sağlayıcısı tanımlanmadan** kullanılabilir. Skill’i yüklemek tek başına projeyi yapılandırmaz veya güvenliği garanti etmez; gerekli kurulum ve doğrulamalar yine uygulanır.
 
 Ortam tanılama, gerçek Semgrep/Trivy çalıştırma, ham kanıt saklama, SARIF normalizasyonu, kararlı parmak izi, tekrarları birleştirme ve kalıcı `SEC-XXXX` kimlikleri sunar. YAML kapıları, test/tekrar tarama/runtime kanıtları ve AI önerileri denetlenebilir bulgu geçmişine bağlanır.
 
