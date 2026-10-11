@@ -9,7 +9,7 @@ Kullanıcı, skill'in çalışması için gereken koşulların ve güncelleme ak
 ## Sonuç ve doğrulama
 - `security adopt --root APP --config CONFIG.yml --policy POLICY.yml --json`: no-write `REVIEW_REQUIRED/20` preview; `--apply` yalnız eksik dosyaları kurar, çakışma halinde mevcutleri koruyup durur.
 - README.md (EN/TR) ve README.tr.md; skill, Python/bağımlılık, Semgrep/Trivy, app-specific reviewed config/policy, preview → apply → Doctor → scan, bağımsız istemci/CLI güncellemesi ve manuel güvenli migration koşullarını açıklar.
-- Adoption ve README yayın commit'i: `56324c201f95b96b8525045b3494006529a918f3`; push anında yerel/uzak `main` eşitliği doğrulandı. Bu handoff kapanış kaydı ayrı bir docs commit'i olarak gönderilecek.
+- Adoption ve README yayın commit'i: `56324c201f95b96b8525045b3494006529a918f3`; push anında yerel/uzak `main` eşitliği doğrulandı. Bu devir güncellemesi yayın sonrası kapanış kaydıdır.
 - `python -m unittest tests.unit.test_adopt tests.unit.test_doctor tests.integration.test_doctor_acceptance -v`: 52 test, 18.457 sn, OK/exit 0. Tam suite 174 test OK (2026-10-11 18:30, önceki tam doğrulama). README eklerinden sonra `git diff --check` temiz.
 
 ## Kalan işler ve sonraki tek adım
