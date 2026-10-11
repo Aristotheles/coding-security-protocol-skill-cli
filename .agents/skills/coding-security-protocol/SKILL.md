@@ -7,9 +7,9 @@ description: Applies Coding Security Protocol during application development, se
 
 Any coding agent may execute this workflow independently. Other agents, Serena,
 Zero-Waste MCP, Obsidian and GSD are optional accelerators, never sources of
-security approval. This skill orchestrates an existing deterministic CLI; it does
-not install scanners, bootstrap arbitrary projects or add an automatic agent-switch
-service merely by being loaded.
+security approval. This skill orchestrates the deterministic CLI. It does not
+install scanner binaries or invent project policy/configuration merely by being
+loaded.
 
 ## Start and choose the scope
 
@@ -24,10 +24,26 @@ service merely by being loaded.
 3. Locate the installed `security` CLI, or the explicitly configured protocol
    checkout's `security-cli/security`. Always pass the actual target via `--root`
    when executing from a different checkout. A skill installation alone does not
-   satisfy doctor structure/config/scanner requirements. If adoption is incomplete,
-   report the real failure and prepare only the authorized setup; never silently
-   run against the protocol checkout instead.
-4. Read [verification](references/verification.md) for implementation/remediation.
+   install the CLI or scanners.
+4. If the target has not adopted the protocol, perform explicit project discovery
+   before changing it: identify languages/frameworks from source and manifests,
+   test command from project scripts/CI, source roots, generated/vendor paths and
+   scanner availability. Do not infer missing facts or silently choose a scan
+   scope, ignore list, mandatory scanner or runtime environment. Ask only for
+   unresolved choices that materially affect coverage or policy. Preserve the
+   target's Git state and every existing protocol file.
+5. Prepare and validate a project-specific `security.config.yml` and
+   `security-policy.yml` outside the target first. Preview adoption with
+   `security adopt --root TARGET --config REVIEWED_CONFIG.yml --policy REVIEWED_POLICY.yml --json`;
+   exit 20 is the expected review preview and writes nothing. Inspect the listed
+   files and conflicts, and explain the selected policy. Apply only when adoption
+   is within the user's request, by adding `--apply`. Existing protocol files are
+   never overwritten; conflicts stop the install. Exit 0 means protocol assets
+   were installed, not that a scan passed. Then run
+   `security doctor --root TARGET --json`; only after Doctor passes run the
+   configured baseline scan and preserve its real evidence. A scanner failure is
+   not a clean scan.
+6. Read [verification](references/verification.md) for implementation/remediation.
    Read [memory and code intelligence](references/memory-and-tools.md) on startup,
    handoff, or when relevant context must be located. Read
    [AI and fallback](references/ai-and-fallback.md) only for provider proposals,

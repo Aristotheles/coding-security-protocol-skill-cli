@@ -88,7 +88,7 @@ Verified versions describe the recorded acceptance environment, not a guarantee 
 
 #### Windows / PowerShell
 
-1. Obtain the repository and open PowerShell in its root. GitHub access currently requires permission.
+1. Obtain the public repository and open PowerShell in its root: [GitHub repository](https://github.com/Aristotheles/coding-security-protocol-skill-cli).
 2. Install the Python dependencies:
 
 ```powershell
@@ -118,12 +118,21 @@ Doctor checks Python, required structure, valid `finding.schema.json`, parseable
 
 Missing mandatory tools fail; optional availability follows config. Empty AI lists are valid. Doctor **does not scan for vulnerabilities**: its PASS means environment checks passed.
 
+For an application that has not adopted the protocol, prepare project-specific, reviewed `security.config.yml` and `security-policy.yml` files from the application's languages, test command, source scope and explicit policy choices. Preview the non-destructive install first:
+
+```powershell
+python security-cli/security adopt --root C:\path\to\application --config C:\path\to\reviewed-security.config.yml --policy C:\path\to\reviewed-security-policy.yml --json
+```
+
+The preview returns `REVIEW_REQUIRED/20` and writes nothing. Review the planned files, conflicts and selected policy; add `--apply` to install. Existing files are preserved and any conflict stops the operation. `ADOPTED/0` means protocol assets were installed; it does not mean scanners ran or the application is secure. Then run `security doctor --root APPLICATION --json`, followed by the configured real scan. Adoption does not guess project scope, select a policy, install scanner binaries or create CI.
+
 <a id="en-workflows"></a>
 ### CLI workflows
 
 | Command | Purpose |
 | --- | --- |
 | `security doctor --json` | Validate environment/config |
+| `security adopt --root APP --config CONFIG.yml --policy POLICY.yml --json` | Preview first-time adoption; `--apply` writes only missing files |
 | `security scan --target tests/fixtures/scanner-project --json` | Execute scanners, retain raw evidence |
 | `security normalize --run-id RUN_ID --json` | Validate/normalize completed scan |
 | `security findings update --run-id RUN_ID --json` | Deduplicate, write canonical JSON, update index |
@@ -334,7 +343,19 @@ The canonical package lives in `.agents/skills/coding-security-protocol/`. A sma
 
 Example request: **“Develop this feature using Coding Security Protocol; run applicable deterministic checks and leave a verified handoff.”** The agent runs the required commands and reports actual evidence. Skill selection is relevance-based; an adopted project's rules can explicitly require it. This is not an enforced commit hook or background service.
 
-For another application, adopt the protocol structure, scanner/test/runtime configuration and policies separately, then run doctor against that application's root. Installing the skill alone does not bootstrap the CLI or make an unrelated application pass doctor. Do not run against this repository as a substitute.
+For another application, use the explicit `security adopt` preview/apply flow with reviewed project-specific config and policy files, then run Doctor and the configured real scan against that application's root. Installing the skill alone does not install the CLI or scanners, and adoption does not infer project scope or policy. Do not run against this repository as a substitute.
+
+#### Requirements and first use
+
+Each client needs the complete skill directory, including `SKILL.md` and its `references/`; install it separately for Codex, Claude Code and Antigravity. The skill guides an agent but does not install or update the Python CLI, Python packages, Semgrep or Trivy. The CLI needs Python 3.11+ plus the packages in `requirements.txt`. Install the scanner executables selected by the reviewed project config; a mandatory scanner missing at Doctor time blocks, while optional scanners follow their configured status. AI providers are optional.
+
+Before the first scan, explicitly choose the application root, test command, source scan scope, generated/vendor exclusions, scanner requirements and policy. Prepare and review that application's `security.config.yml` and `security-policy.yml`; do not copy this repository's settings blindly. Run `security adopt --root APP ...` first as a no-write preview, inspect its plan, then add `--apply` to install only missing protocol files. Run Doctor against the same `--root`, and only after it passes run a real scan. `ADOPTED/0` and Doctor `PASS/0` are setup results, not evidence that a scan is clean.
+
+#### Updating the skill and protocol
+
+Get the desired revision of this repository, then copy the full `.agents/skills/coding-security-protocol/` directory into each client's skill location. Reload or restart that client if it does not discover the updated skill. Updating one client does not update the others. Update the CLI checkout separately; a skill refresh does not update the CLI or scanner binaries. Run Doctor after a CLI, dependency, scanner or project-config update, then run the checks required for the change.
+
+There is no automatic upgrade command for files already adopted into an application. `security adopt` preserves existing files and reports conflicts, so it is an install path, not an overwrite-based updater. Compare new templates with the application's current config, policy and contracts; review and migrate changes deliberately, preserve local findings/evidence, then run Doctor and the configured tests and scans. Do not replace project policy or configuration wholesale to obtain a passing Doctor result.
 
 #### Detailed guidance loaded when needed
 
@@ -430,7 +451,7 @@ Doğrulanan sürümler kayıtlı kabul ortamını gösterir; tüm platform/sür�
 
 #### Windows / PowerShell
 
-1. Depoyu edinip kökünde PowerShell açın. GitHub erişimi şu anda yetki gerektirir.
+1. [Herkese açık depoyu](https://github.com/Aristotheles/coding-security-protocol-skill-cli) edinip kökünde PowerShell açın.
 2. Python bağımlılıklarını kurun:
 
 ```powershell
@@ -466,6 +487,7 @@ Zorunlu araç eksikse başarısızdır; isteğe bağlı araç config'e göre de�
 | Komut | Amaç |
 | --- | --- |
 | `security doctor --json` | Ortam/config doğrula |
+| `security adopt --root APP --config CONFIG.yml --policy POLICY.yml --json` | İlk adoption önizlemesi; yalnız eksik dosyaları kurmak için `--apply` |
 | `security scan --target tests/fixtures/scanner-project --json` | Tarayıcı çalıştır, ham kanıt sakla |
 | `security normalize --run-id RUN_ID --json` | Tamamlanan taramayı doğrula/normalize et |
 | `security findings update --run-id RUN_ID --json` | Tekrar birleştir, kanonik JSON yaz, indeks güncelle |
@@ -676,7 +698,19 @@ Ana paket `.agents/skills/coding-security-protocol/` içindedir. Küçük `.clau
 
 Örnek istek: **“Bu özelliği Coding Security Protocol ile geliştir; gerekli deterministik kontrolleri çalıştır ve doğrulanmış devir kaydı bırak.”** Ajan gereken komutları çalıştırıp gerçek kanıtı raporlar. Skill seçimi göreve uygunluğa dayanır; protokolü benimseyen proje kuralları kullanımını açıkça isteyebilir. Bu teknik commit kilidi veya arka plan servisi değildir.
 
-Başka uygulamada protokol dosya yapısını, tarayıcı/test/runtime config'ini ve politikalarını ayrıca kurup doctor'ı o uygulama kökünde çalıştırın. Skill kurulumu tek başına CLI bootstrap yapmaz veya ilgisiz uygulamaya doctor PASS sağlamaz. Bunun yerine bu depoyu taramayın.
+Başka uygulamada gözden geçirilmiş, projeye özel config ve policy ile `security adopt` önizleme/kurulum akışını kullanıp ardından Doctor ve gerçek taramayı o uygulama kökünde çalıştırın. Skill kurulumu tek başına CLI veya tarayıcı kurmaz; adoption da proje kapsamı veya policy tahmin etmez. Bunun yerine bu depoyu taramayın.
+
+#### Gereksinimler ve ilk kullanım
+
+Her istemciye `SKILL.md` ve `references/` klasörü dahil skill paketinin tamamını ayrı ayrı kurun. Skill, ajana iş akışını anlatır; Python CLI'ı, Python paketlerini, Semgrep'i veya Trivy'yi kurmaz/güncellemez. CLI için Python 3.11+ ve `requirements.txt` içindeki paketler gerekir. Gözden geçirilmiş proje config'inde seçilen tarayıcıları ayrıca kurun. Doctor sırasında zorunlu tarayıcı eksikse işlem bloklanır; isteğe bağlı tarayıcı config'teki durumuna göre değerlendirilir. AI sağlayıcısı zorunlu değildir.
+
+İlk taramadan önce uygulama kökünü, test komutunu, kaynak tarama kapsamını, üretilmiş/vendor dışlamalarını, tarayıcı zorunluluğunu ve policy kararlarını açıkça belirleyin. Uygulamaya özel `security.config.yml` ve `security-policy.yml` dosyalarını kanıta göre hazırlayıp inceleyin; bu deponun ayarlarını doğrudan kopyalamayın. Önce `security adopt --root UYGULAMA ...` ile yazmayan önizlemeyi çalıştırıp planı inceleyin, sonra yalnız eksik dosyaları kurmak için `--apply` ekleyin. Aynı `--root` ile Doctor çalıştırın; ancak geçerse gerçek taramaya başlayın. `ADOPTED/0` ve Doctor `PASS/0`, kurulum sonuçlarıdır; temiz tarama kanıtı değildir.
+
+#### Skill ve protokolü güncelleme
+
+Bu deponun istediğiniz sürümünü alın ve `.agents/skills/coding-security-protocol/` klasörünün tamamını her istemcinin skill dizinine ayrı ayrı kopyalayın. İstemci güncel skill'i algılamazsa yeniden yükleyin veya başlatın. Bir istemciyi güncellemek diğerlerini güncellemez. CLI checkout'unu ayrıca güncelleyin; skill yenilemesi CLI'ı veya tarayıcı binary'lerini güncellemez. CLI, bağımlılık, tarayıcı veya proje config'i değişince Doctor'ı ve değişikliğin gerektirdiği kontrolleri çalıştırın.
+
+Benimsenmiş uygulama dosyaları için otomatik upgrade komutu yoktur. `security adopt` mevcut dosyaları korur ve çakışmaları bildirir; üzerine yazan bir güncelleme aracı değildir. Yeni şablonları uygulamanın config, policy ve sözleşmeleriyle karşılaştırın; değişiklikleri bilinçli biçimde gözden geçirip taşıyın, yerel bulgu/kanıtları koruyun, ardından Doctor, yapılandırılmış testler ve taramaları çalıştırın. Doctor PASS almak için proje policy veya config'ini bütünüyle değiştirmeyin.
 
 #### Gerektiğinde okunan ayrıntılı rehberler
 

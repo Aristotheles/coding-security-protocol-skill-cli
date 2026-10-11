@@ -54,10 +54,14 @@ globally just to avoid prompts. Failed optional lookup falls back to local searc
 6. Test sequential handoff against real Git/evidence when authorized. Do not call
    file installation an automatic quota switch, live AI review or end-to-end GUI test.
 
-For an unrelated application, adopt/configure the deterministic CLI separately:
-scanner profiles, test command, runtime environment, required schema/policy/structure
-and local tools. Run doctor against that application. Installing the skill does
-not install protocol binaries or copy a passing application's evidence.
+For an unrelated application, use `security adopt` with reviewed project-specific
+config and policy files. Adoption defaults to a no-write preview (`REVIEW_REQUIRED/20`);
+`--apply` installs only missing protocol files and refuses conflicts. Inputs must
+come from project evidence and explicit choices for scan scope, scanner mandatory/
+optional state, tests, runtime verification and policy. Adoption does not install
+scanner binaries, create CI, or prove the application clean. After applying, run
+Doctor on that exact root and then the configured real scan. Installing the skill
+alone does not install the CLI/scanners or reuse another project's evidence.
 
 ## Official client references
 

@@ -7,7 +7,7 @@ from pathlib import Path
 import sqlite3
 import uuid
 
-from .doctor import ConfigError, load_yaml, validate_config
+from .doctor import ConfigError, load_yaml, project_name, validate_config
 from .normalize import ContractError, RUN_ID, load_normalized, normalize, read_json, safe_path, schema_validator
 from .scan import execute, executable_path, profile_inputs, run_scan, timestamp
 from .storage_io import atomic_json
@@ -211,7 +211,7 @@ def run_verify(root, target='.', context_file=None, event=None, finding_id=None,
     root = Path(root).resolve()
     run_id = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ-') + uuid.uuid4().hex
     folder = root / '.security/evidence' / run_id
-    report = dict(project='Coding Security Protocol', command='verify', run_id=run_id,
+    report = dict(project=project_name(root), command='verify', run_id=run_id,
                   started_at=timestamp(), evidence={}, closed_ids=[], canonical_written=False)
     report_path = root / '.security/reports' / (run_id + '-verify-report.json')
     try:

@@ -2,9 +2,11 @@ import copy
 import json
 import sqlite3
 import sys
+import tempfile
+from pathlib import Path
 from unittest.mock import patch
 
-from tests.support import DoctorProject, doctor
+from tests.support import DoctorProject, create_application_project, doctor
 
 
 class ConfigTests(DoctorProject):
@@ -166,6 +168,32 @@ class EnvironmentTests(DoctorProject):
     def test_write_permission_error(self):
         with patch.object(doctor.tempfile, 'NamedTemporaryFile', side_effect=PermissionError):
             self.assertEqual(self.result()['exit_code'], 40)
+
+
+class ExternalApplicationTests(DoctorProject):
+    def test_doctor_accepts_application_without_vendored_cli(self):
+        with tempfile.TemporaryDirectory(prefix='csp-application-test-') as temp:
+            root = create_application_project(Path(temp))
+            report = doctor.run_doctor(root, external_project=True)
+        self.assertEqual(report['result'], 'PASS', report)
+        self.assertEqual(report['project'], Path(temp).name)
+
+    def test_application_does_not_need_protocol_repo_documentation_or_test_layout(self):
+        with tempfile.TemporaryDirectory(prefix='csp-application-test-') as temp:
+            root = create_application_project(Path(temp))
+            for name in ('AGENTS.md', 'MVP.md', 'docs/SECURITY.md'):
+                (root / name).unlink(missing_ok=True)
+            report = doctor.run_doctor(root, external_project=True)
+        self.assertEqual(report['result'], 'PASS', report)
+
+    def test_missing_application_security_contract_fails(self):
+        with tempfile.TemporaryDirectory(prefix='csp-application-test-') as temp:
+            root = create_application_project(Path(temp))
+            (root / '.security/playbooks/secret-leak.md').unlink()
+            report = doctor.run_doctor(root, external_project=True)
+        self.assertEqual(report['exit_code'], 30)
+        structure = next(check for check in report['checks'] if check['name'] == 'structure')
+        self.assertEqual(structure['state'], 'FAIL')
 
 
 class DatabaseTests(DoctorProject):

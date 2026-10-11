@@ -1,3 +1,47 @@
+# Coding Security Protocol — güncel genel adoption devri
+Güncelleme: 2026-10-11 18:30 Europe/Istanbul
+Aktif ajan: Codex; ilk adoption dikey dilimi doğrulandı
+Durum: `security adopt` preview/apply ve skill onboarding akışı hazır; portable CLI dağıtımı ve profil üretimi açık.
+
+## Kullanıcı hedefi ve yetki
+Amaç yalnız Hibe Radarı değil; Coding Security Protocol'ün farklı uygulamalarda ve Codex/Claude Code/Antigravity'de bağımsız çalışabilen skill olması. Kullanıcı “başla” dedi. Bu, genel adoption özelliğini geliştirme yetkisidir. Commit/push, Hibe Radarı dosyalarını değiştirme, CI veya tarayıcı kurma bu turda yapılmadı.
+
+## Uygulanan ve doğrulanan dilim
+- Dış Doctor, protokol deposuna özgü AGENTS/MVP/docs/test klasörlerini istemiyor.
+- `security adopt` açık `--root`, `--config` ve `--policy` ister. Varsayılan önizleme yazma yapmaz (`REVIEW_REQUIRED/20`); `--apply` sadece eksik protocol assets kurar, hiçbir mevcut dosyanın üzerine yazmaz. Geçersiz config/policy `CONFIG_ERROR/30`; çakışma `REVIEW_REQUIRED/20`. Doğrulanan config/policy baytları kurulanlarla aynıdır.
+- Skill ve EN/TR README ilk kullanım keşfi → gözden geçirilmiş config/policy → preview → apply → Doctor → gerçek tarama sırasını anlatıyor.
+- Geçici uygulamada gerçek CLI adoption ve Doctor kabul testi geçti. Hibe Radarı'nda Doctor/tarama yapılmadı.
+
+Doğrulama: `python -m unittest discover -s tests -v` — 174 test, 267.639 sn, OK/exit 0. İlgili test grubu: 52 test, 18.038 sn, OK. `python -m compileall -q security-cli/lib tests` exit 0, `git diff --check` temiz. Gerçek repo Doctor: PASS/0 (`2026-10-11T15:32:07Z`, Python 3.14.5; schema/config/policy, Semgrep/Trivy availability, runtime write, SQLite FK/integrity PASS). Doctor tarama çalıştırmadı.
+
+## Git ve açık işler
+Başlangıç HEAD `2381d67aea906fe62b52eea0e69c056372f0fdb3`; Codex başlamadan önce dokuz dosyada unstaged değişiklik vardı; korundu. Güncel ağaçta 14 tracked modified, iki untracked dosya var. Yeni `security-cli/lib/adopt.py` ve `tests/unit/test_adopt.py` eklendi; ilişkili CLI/skill/README/test dosyaları güncellendi. Commit/push yapılmadı.
+
+CLI şu an protokol checkout'undan çağrılıyor. Portable/global CLI kurulumu ve otomatik/gözden geçirilebilir proje profili üretimi henüz yok; skill kanıta dayalı keşif talimatı veriyor, ama her dil/framework için config/policy generator sunmuyor. Sonraki tek adım portable CLI dağıtımını tasarlayıp uygulamak; ardından çoklu teknoloji fixture'larında adoption+gerçek tarama kabulini genişletmek. Hibe Radarı'nın `.agent/HANDOFF.md`, izlenmeyen `SECURITY-REVIEW.md` ve `docs/TEACHER_ANALYTICS_PLAN.md` dosyalarını koru.
+
+---
+
+# Coding Security Protocol — genel adoption devir kaydı
+Güncelleme: 2026-10-11 18:07 Europe/Istanbul
+Aktif ajan: Codex; bu alt adım doğrulandı, devam edebilir
+Durum: Kullanıcı genel projelerde kullanılabilir skill/adoption çalışmasını başlattı. İlk dar düzeltme tamamlandı; genel init/adopt akışı henüz yok.
+
+## Kullanıcı hedefi ve yetki
+Amaç yalnız Hibe Radarı entegrasyonu değil; Coding Security Protocol'ün farklı uygulamalarda güvenli biçimde kurulup kullanılabilen, Codex/Claude Code/Antigravity tarafından bağımsız çağrılabilen bir skill olması. Kullanıcı “başla” dedi. Bu, genel adoption özelliğini geliştirmeye başlama yetkisidir. Bu turda commit/push, Hibe Radarı dosyalarını değiştirme, CI ekleme veya tarayıcı kurma yapılmadı.
+
+## Bu alt adım
+Dış proje Doctor yapısı, protokol deposuna özgü `AGENTS.md`, `MVP.md`, `docs/SECURITY.md`, `docs/` ve `tests/` zorunluluklarından ayrıldı. Artık yalnız protokolün gerektirdiği runtime dizinleri, schema/policy/playbook yolları aranıyor. Kapsamı doğrulayan negatif test eklendi. İlk denemede test fixture olmayan `docs/` klasörünü silmeye çalıştı; test düzeltildi, üretim kodunda sorun yoktu.
+
+Gerçek doğrulama: `python -m unittest tests.unit.test_doctor tests.integration.test_doctor_acceptance -v` — 44 test, 16.679 sn, OK (exit 0). Önceki suite de bu kapsam öncesinde 165 test OK olarak kaydedilmişti; bu alt adımdan sonra full suite tekrar koşulmadı. `git diff --check` temiz. Hibe Radarı Doctor çalıştırılmadı; benimsenmemiş projede güvenlik yapılandırması yok.
+
+## Git ve sahiplik
+Başlangıç HEAD `2381d67aea906fe62b52eea0e69c056372f0fdb3`. Bu çalışmaya başlamadan önce dokuz dosyada mevcut, kullanıcı/önceki çalışma kaynaklı unstaged değişiklikler vardı. Bu değişiklikler korunuyor; Codex yalnız `security-cli/lib/doctor.py` dış proje zorunluluklarını ve `tests/unit/test_doctor.py` negatif kabul testini daralttı. Güncel `git status` dokuz dosyayı gösteriyor; hiçbir commit/push yapılmadı.
+
+## Açık işler ve sonraki tek adım
+`security adopt/init` henüz yok; proje keşif manifesti, non-destructive preview/apply, portable CLI dağıtımı, proje profili ve gerçek tarama kurulumu tamamlanmadı. Sonraki tek adım: genelden bağımsız ve geriye uyumlu bir adoption sözleşmesi tasarlayıp mevcut config/schema/policy/CLI ile uyumunu kanıtlamak; ondan sonra ilk dar CLI uygulamasına geçmek. Hibe Radarı'nın `.agent/HANDOFF.md`, izlenmeyen `SECURITY-REVIEW.md` ve `docs/TEACHER_ANALYTICS_PLAN.md` dosyalarına dokunma.
+
+---
+
 # Coding Security Protocol — ortak devir
 Güncelleme: 2026-10-09 19:35 Europe/Istanbul
 Aktif ajan: Claude Code (Sonnet 5.5); yazmayı bırakıyor, yeni görev bekliyor

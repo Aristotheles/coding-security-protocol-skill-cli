@@ -10,7 +10,7 @@ import tempfile
 import tomllib
 import uuid
 
-from .doctor import ConfigError, load_yaml, validate_config
+from .doctor import ConfigError, load_yaml, project_name, validate_config
 from .normalize import ContractError, read_json, safe_path, schema_validator
 from .scan import executable_path, execute, timestamp
 from .storage_io import atomic_json, store_lock
@@ -250,7 +250,7 @@ def invoke(root, provider, request, folder, task='patch'):
 def run_ai_patch(root, finding_id, provider_id=None):
     root = Path(root).resolve()
     run_id = timestamp()[:19].replace('-','').replace(':','')+'Z-'+uuid.uuid4().hex
-    report = dict(project='Coding Security Protocol', command='ai-patch', run_id=run_id,
+    report = dict(project=project_name(root), command='ai-patch', run_id=run_id,
                   finding_id=finding_id, started_at=timestamp(), attempts=[],
                   result='REVIEW_REQUIRED', exit_code=20, terminal_state='human_review',
                   finding_closed=False, patch_applied=False)

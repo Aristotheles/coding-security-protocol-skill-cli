@@ -9,6 +9,7 @@ import sys
 import tempfile
 import uuid
 
+TOOL_ROOT = Path(__file__).resolve().parents[2]
 PASS, BLOCK, REVIEW_REQUIRED = 0, 10, 20
 CONFIG_ERROR, TOOL_ERROR, CONTRACT_ERROR, VERIFY_ERROR = 30, 40, 50, 60
 RUNTIME_DIRS = (
@@ -21,6 +22,10 @@ REQUIRED_DIRS = RUNTIME_DIRS + (
 )
 REQUIRED_FILES = ('MVP.md', 'AGENTS.md', 'SECURITY_AGENT.md', 'security-cli/security',
                   'security-cli/security-store.schema.sql')
+APPLICATION_REQUIRED_DIRS = RUNTIME_DIRS + (
+    'schemas', '.security/policies', '.security/playbooks',
+)
+APPLICATION_REQUIRED_FILES = ('.security/playbooks/secret-leak.md',)
 
 
 class ConfigError(ValueError):
@@ -48,6 +53,14 @@ def reject_json_constant(value):
 
 
 def load_yaml(path):
+    try:
+        contents = Path(path).read_bytes()
+    except OSError as exc:
+        raise ConfigError('missing, unreadable or invalid YAML') from exc
+    return load_yaml_content(contents)
+
+
+def load_yaml_content(contents):
     yaml, _ = dependencies()
 
     class UniqueSafeLoader(yaml.SafeLoader):
@@ -62,7 +75,8 @@ def load_yaml(path):
 
     UniqueSafeLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, mapping)
     try:
-        data = yaml.load(path.read_text(encoding='utf-8-sig'), Loader=UniqueSafeLoader)
+        text = contents.decode('utf-8-sig') if isinstance(contents, bytes) else contents
+        data = yaml.load(text, Loader=UniqueSafeLoader)
     except (OSError, UnicodeError, yaml.YAMLError, ValueError, TypeError, RecursionError) as exc:
         raise ConfigError('missing, unreadable or invalid YAML') from exc
     if not isinstance(data, dict) or not data:
@@ -189,6 +203,18 @@ def connect_database(path):
         raise
 
 
+def project_name(root):
+    return Path(root).resolve().name or 'project'
+
+
+def database_schema_path(root):
+    root = Path(root).resolve()
+    local_schema = root / 'security-cli/security-store.schema.sql'
+    if local_schema.is_file():
+        return local_schema
+    return TOOL_ROOT / 'security-cli/security-store.schema.sql'
+
+
 def database_objects(connection):
     return {(kind, name): ' '.join(sql.split()).lower()
             for kind, name, sql in connection.execute(
@@ -196,7 +222,7 @@ def database_objects(connection):
 
 
 def _initialize_database(root):
-    sql = (root / 'security-cli/security-store.schema.sql').read_text(encoding='utf-8-sig')
+    sql = database_schema_path(root).read_text(encoding='utf-8-sig')
     expected = connect_database(':memory:')
     actual = None
     try:
@@ -242,7 +268,7 @@ def check_write_access(root):
                 raise OSError('runtime probe readback failed')
 
 
-def run_doctor(root):
+def run_doctor(root, external_project=False):
     root = Path(root).resolve()
     now = datetime.now(timezone.utc)
     checks = []
@@ -263,8 +289,10 @@ def run_doctor(root):
             raise ConfigError('Python 3.11 or newer within Python 3 is required')
 
     def structure():
-        missing = [name for name in REQUIRED_DIRS if not (root / name).is_dir()]
-        missing += [name for name in REQUIRED_FILES if not (root / name).is_file()]
+        required_dirs = APPLICATION_REQUIRED_DIRS if external_project else REQUIRED_DIRS
+        required_files = APPLICATION_REQUIRED_FILES if external_project else REQUIRED_FILES
+        missing = [name for name in required_dirs if not (root / name).is_dir()]
+        missing += [name for name in required_files if not (root / name).is_file()]
         if missing:
             raise ConfigError('missing required paths: ' + ', '.join(missing))
 
@@ -311,7 +339,7 @@ def run_doctor(root):
            'initialized; foreign_keys=ON; schema and integrity checked')
     codes = {check['code'] for check in checks if check['code']}
     code = CONFIG_ERROR if CONFIG_ERROR in codes else TOOL_ERROR if codes else PASS
-    return {'project': 'Coding Security Protocol', 'command': 'doctor',
+    return {'project': project_name(root), 'command': 'doctor',
             'run_id': now.strftime('%Y%m%dT%H%M%SZ-') + uuid.uuid4().hex[:8],
             'timestamp': now.isoformat(timespec='seconds').replace('+00:00', 'Z'),
             'result': {PASS: 'PASS', CONFIG_ERROR: 'CONFIG_ERROR', TOOL_ERROR: 'TOOL_ERROR'}[code],
@@ -328,7 +356,7 @@ def main(argv=None):
     parser.add_argument('command', help='doctor, scan, normalize, findings or gate')
     parser.add_argument('action', nargs='?')
     parser.add_argument('identifier', nargs='?')
-    parser.add_argument('--root', type=Path, default=Path.cwd(), help='project root; defaults to current directory')
+    parser.add_argument('--root', type=Path, help='project root; defaults to current directory except adopt')
     parser.add_argument('--json', action='store_true', help='emit machine-readable JSON')
     parser.add_argument('--target', default='.', help='scan target within project root')
     parser.add_argument('--run-id', help='scan run ID for normalize or findings update')
@@ -337,7 +365,17 @@ def main(argv=None):
     parser.add_argument('--close', action='store_true', help='verify and deterministically close explicitly targeted findings')
     parser.add_argument('--waiver', type=Path, help='existing human-approved runtime waiver JSON under .security')
     parser.add_argument('--provider', help='configured AI provider ID; no implicit trust upgrade')
+    parser.add_argument('--config', type=Path, help='reviewed security.config.yml for adopt')
+    parser.add_argument('--policy', type=Path, help='reviewed security-policy.yml for adopt')
+    parser.add_argument('--apply', action='store_true', help='apply an adoption preview; required for writes')
     args = parser.parse_args(argv)
+    root_was_explicit = args.root is not None
+    args.root = args.root or Path.cwd()
+    if (args.config is not None or args.policy is not None or args.apply) and args.command != 'adopt':
+        parser.error('--config, --policy and --apply require adopt')
+    if args.command == 'adopt' and (not root_was_explicit or args.action or args.identifier
+                                    or args.config is None or args.policy is None):
+        parser.error('adopt requires explicit --root, --config and --policy')
     if args.provider and args.command != 'ai-patch':
         parser.error('provider requires ai-patch')
     if args.command == 'ai-patch' and args.identifier:
@@ -352,16 +390,32 @@ def main(argv=None):
         parser.error('verification arguments require verify command')
     if args.command == 'verify' and args.identifier:
         parser.error('only one positional finding ID is supported')
-    if args.command in ('normalize', 'findings'):
+    if args.command == 'adopt':
+        try:
+            if args.apply:
+                from .adopt import apply_adoption
+                report = apply_adoption(args.root, args.config, args.policy)
+            else:
+                from .adopt import plan_adoption
+                report, _, _ = plan_adoption(args.root, args.config, args.policy)
+        except ConfigError as exc:
+            report = {'project': project_name(args.root), 'command': 'adopt',
+                      'result': 'CONFIG_ERROR', 'exit_code': CONFIG_ERROR, 'mode': 'invalid',
+                      'detail': str(exc)}
+        except ImportError:
+            report = {'project': project_name(args.root), 'command': 'adopt',
+                      'result': 'TOOL_ERROR', 'exit_code': TOOL_ERROR, 'mode': 'failed',
+                      'detail': 'required parser dependency unavailable'}
+    elif args.command in ('normalize', 'findings'):
         try:
             from . import normalize, store
             from jsonschema.exceptions import ValidationError
         except ImportError:
-            report = {'project': 'Coding Security Protocol', 'command': args.command,
+            report = {'project': project_name(args.root), 'command': args.command,
                       'exit_code': TOOL_ERROR, 'result': 'TOOL_ERROR', 'detail': 'required parser dependency unavailable'}
             print(json.dumps(report) if args.json else 'TOOL_ERROR: required parser dependency unavailable')
             return TOOL_ERROR
-        report = {'project': 'Coding Security Protocol', 'command': args.command, 'exit_code': 0}
+        report = {'project': project_name(args.root), 'command': args.command, 'exit_code': 0}
         try:
             if args.command == 'normalize':
                 result = normalize.normalize(args.root, args.run_id)
@@ -389,7 +443,7 @@ def main(argv=None):
             from .ai_patch import run_ai_patch
             report = run_ai_patch(args.root, args.action, args.provider)
         except ImportError:
-            report = {'project': 'Coding Security Protocol', 'command': 'ai-patch',
+            report = {'project': project_name(args.root), 'command': 'ai-patch',
                       'result': 'TOOL_ERROR', 'exit_code': TOOL_ERROR,
                       'detail': 'required parser dependency unavailable'}
     elif args.command == 'verify':
@@ -397,7 +451,7 @@ def main(argv=None):
             from .verify import run_verify
             report = run_verify(args.root, args.target, args.input, args.event, args.action, args.close, args.waiver)
         except ImportError:
-            report = {'project': 'Coding Security Protocol', 'command': 'verify',
+            report = {'project': project_name(args.root), 'command': 'verify',
                       'result': 'TOOL_ERROR', 'exit_code': TOOL_ERROR,
                       'detail': 'required parser dependency unavailable'}
     elif args.command == 'gate':
@@ -405,22 +459,23 @@ def main(argv=None):
             from .policy import run_gate
             report = run_gate(args.root, args.input, args.event)
         except ImportError:
-            report = {'project': 'Coding Security Protocol', 'command': 'gate',
+            report = {'project': project_name(args.root), 'command': 'gate',
                       'result': 'TOOL_ERROR', 'exit_code': TOOL_ERROR,
                       'detail': 'required parser dependency unavailable'}
     elif args.command == 'scan':
         from .scan import run_scan
         report = run_scan(args.root, args.target)
     elif args.command != 'doctor':
-        report = {'project': 'Coding Security Protocol', 'command': args.command,
+        report = {'project': project_name(args.root), 'command': args.command,
                   'result': 'CONTRACT_ERROR', 'exit_code': CONTRACT_ERROR,
                   'detail': 'command not implemented in M4'}
     else:
-        report = run_doctor(args.root)
+        root = args.root.resolve()
+        report = run_doctor(root, external_project=root != TOOL_ROOT)
     if args.json:
         print(json.dumps(report, ensure_ascii=True, indent=2))
     else:
-        print('Coding Security Protocol - ' + report['command'])
+        print(report.get('project', 'Coding Security Protocol') + ' - ' + report['command'])
         for check in report.get('checks', []):
             print(f"[{check['state']}] {check['name']}: {check['detail']}")
         for scan in report.get('scanners', []):

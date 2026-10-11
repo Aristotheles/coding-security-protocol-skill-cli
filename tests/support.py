@@ -43,3 +43,31 @@ class DoctorProject(unittest.TestCase):
 
     def result(self):
         return doctor.run_doctor(self.root)
+
+
+def create_application_project(root):
+    root = Path(root)
+    for name in doctor.APPLICATION_REQUIRED_DIRS:
+        (root / name).mkdir(parents=True, exist_ok=True)
+    for name in doctor.APPLICATION_REQUIRED_FILES:
+        target = root / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if name == 'docs/SECURITY.md':
+            target.write_text('Application security requirements for tests.\n', encoding='utf-8')
+        else:
+            shutil.copy2(REPOSITORY / name, target)
+    for name in ('security.config.yml', '.security/policies/security-policy.yml',
+                 'schemas/finding.schema.json'):
+        target = root / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(REPOSITORY / name, target)
+    for name in ('.security/rules/python-security.yml', '.security/rules/trivy-secret.yml'):
+        target = root / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(REPOSITORY / name, target)
+    config = doctor.load_yaml(root / 'security.config.yml')
+    for profile in config['scanners'].values():
+        profile.update(enabled=False, mandatory=False)
+    yaml, _ = doctor.dependencies()
+    (root / 'security.config.yml').write_text(yaml.safe_dump(config), encoding='utf-8')
+    return root

@@ -9,8 +9,8 @@ import shutil
 import subprocess
 import uuid
 
-from .doctor import (CONFIG_ERROR, TOOL_ERROR, ConfigError, load_yaml, validate_config,
-                     reject_json_constant, unique_pairs)
+from .doctor import (CONFIG_ERROR, TOOL_ERROR, ConfigError, load_yaml, project_name,
+                     validate_config, reject_json_constant, unique_pairs)
 
 
 def timestamp():
@@ -101,7 +101,7 @@ def sarif_count(path):
 def run_scan(root, target='.'):
     root = Path(root).resolve()
     run_id = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ-') + uuid.uuid4().hex
-    report = {'project': 'Coding Security Protocol', 'command': 'scan', 'run_id': run_id,
+    report = {'project': project_name(root), 'command': 'scan', 'run_id': run_id,
               'started_at': timestamp(), 'scanners': [], 'exit_code': 0,
               'result': 'SCAN_COMPLETED'}
     try:

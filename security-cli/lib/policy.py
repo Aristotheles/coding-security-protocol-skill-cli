@@ -7,7 +7,7 @@ from pathlib import Path, PurePosixPath
 import sqlite3
 import uuid
 
-from .doctor import ConfigError, load_yaml, validate_config, validate_policy
+from .doctor import ConfigError, load_yaml, project_name, validate_config, validate_policy
 from .normalize import ContractError, RUN_ID, read_json, safe_path
 from .storage_io import atomic_json, store_lock
 from . import store
@@ -284,7 +284,7 @@ def run_gate(root, context_file=None, event=None, _closure_proof=None):
     root = Path(root).resolve()
     now = datetime.now(timezone.utc)
     run_id = now.strftime('%Y%m%dT%H%M%SZ-') + uuid.uuid4().hex
-    report = dict(project='Coding Security Protocol', command='gate', audit_version=1,
+    report = dict(project=project_name(root), command='gate', audit_version=1,
                   run_id=run_id, timestamp=now.isoformat(timespec='seconds').replace('+00:00', 'Z'),
                   notifications=[], policies=[], evidence_issues=[], finding_closure=False)
     path = root / '.security/reports' / (run_id + '-gate-report.json')

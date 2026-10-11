@@ -84,7 +84,7 @@ Doğrulanan sürümler kayıtlı kabul ortamını gösterir; tüm platform/sür�
 
 #### Windows / PowerShell
 
-1. Depoyu edinip kökünde PowerShell açın. GitHub erişimi şu anda yetki gerektirir.
+1. [Herkese açık depoyu](https://github.com/Aristotheles/coding-security-protocol-skill-cli) edinip kökünde PowerShell açın.
 2. Python bağımlılıklarını kurun:
 
 ```powershell
@@ -114,12 +114,21 @@ Doctor; Python, zorunlu yapı, geçerli `finding.schema.json`, ayrıştırılabi
 
 Zorunlu araç eksikse başarısızdır; isteğe bağlı araç config'e göre değerlendirilir. Boş AI listesi geçerlidir. Doctor **açık taramaz**; PASS yalnız ortam kontrolüdür.
 
+Protokolü henüz benimsememiş bir uygulamada önce dil/framework, test komutu, kaynak kapsamı ve tarayıcı tercihlerinden hareketle projeye özel, gözden geçirilmiş bir `security.config.yml` hazırlayın. Kurulumu önce yazma yapmayan önizlemeyle görün:
+
+```powershell
+python security-cli/security adopt --root C:\uygulama\yolu --config C:\gecici\gozden-gecirilmis-security.config.yml --policy C:\gecici\gozden-gecirilmis-security-policy.yml --json
+```
+
+Önizleme `REVIEW_REQUIRED/20` döndürür ve dosya yazmaz. Planlanan dosyaları, çakışmaları ve seçilen policy'yi inceleyin; kurmak için `--apply` ekleyin. Mevcut dosyaların üzerine yazılmaz; herhangi bir çakışma kurulumu durdurur. `ADOPTED/0`, protokol dosyalarının kurulduğunu söyler; tarayıcıların çalıştığını veya uygulamanın güvenli olduğunu kanıtlamaz. Ardından `security doctor --root UYGULAMA --json` ve yapılandırılmış gerçek taramayı çalıştırın. Adopt komutu proje kapsamı/policy uydurmaz, tarayıcı kurmaz ve CI oluşturmaz.
+
 <a id="tr-workflows"></a>
 ### CLI akışları
 
 | Komut | Amaç |
 | --- | --- |
 | `security doctor --json` | Ortam/config doğrula |
+| `security adopt --root APP --config CONFIG.yml --policy POLICY.yml --json` | İlk adoption önizlemesi; yalnız eksik dosyaları kurmak için `--apply` |
 | `security scan --target tests/fixtures/scanner-project --json` | Tarayıcı çalıştır, ham kanıt sakla |
 | `security normalize --run-id RUN_ID --json` | Tamamlanan taramayı doğrula/normalize et |
 | `security findings update --run-id RUN_ID --json` | Tekrar birleştir, kanonik JSON yaz, indeks güncelle |
@@ -330,7 +339,19 @@ Ana paket `.agents/skills/coding-security-protocol/` içindedir. Küçük `.clau
 
 Örnek istek: **“Bu özelliği Coding Security Protocol ile geliştir; gerekli deterministik kontrolleri çalıştır ve doğrulanmış devir kaydı bırak.”** Ajan gereken komutları çalıştırıp gerçek kanıtı raporlar. Skill seçimi göreve uygunluğa dayanır; protokolü benimseyen proje kuralları kullanımını açıkça isteyebilir. Bu teknik commit kilidi veya arka plan servisi değildir.
 
-Başka uygulamada protokol dosya yapısını, tarayıcı/test/runtime config'ini ve politikalarını ayrıca kurup doctor'ı o uygulama kökünde çalıştırın. Skill kurulumu tek başına CLI bootstrap yapmaz veya ilgisiz uygulamaya doctor PASS sağlamaz. Bunun yerine bu depoyu taramayın.
+Başka uygulamada gözden geçirilmiş, projeye özel config ve policy ile `security adopt` önizleme/kurulum akışını kullanıp ardından Doctor ve gerçek taramayı o uygulama kökünde çalıştırın. Skill kurulumu tek başına CLI veya tarayıcı kurmaz; adoption da proje kapsamı veya policy tahmin etmez. Bunun yerine bu depoyu taramayın.
+
+#### Gereksinimler ve ilk kullanım
+
+Her istemciye `SKILL.md` ve `references/` klasörü dahil skill paketinin tamamını ayrı ayrı kurun. Skill, ajana iş akışını anlatır; Python CLI'ı, Python paketlerini, Semgrep'i veya Trivy'yi kurmaz/güncellemez. CLI için Python 3.11+ ve `requirements.txt` içindeki paketler gerekir. Gözden geçirilmiş proje config'inde seçilen tarayıcıları ayrıca kurun. Doctor sırasında zorunlu tarayıcı eksikse işlem bloklanır; isteğe bağlı tarayıcı config'teki durumuna göre değerlendirilir. AI sağlayıcısı zorunlu değildir.
+
+İlk taramadan önce uygulama kökünü, test komutunu, kaynak tarama kapsamını, üretilmiş/vendor dışlamalarını, tarayıcı zorunluluğunu ve policy kararlarını açıkça belirleyin. Uygulamaya özel `security.config.yml` ve `security-policy.yml` dosyalarını kanıta göre hazırlayıp inceleyin; bu deponun ayarlarını doğrudan kopyalamayın. Önce `security adopt --root UYGULAMA ...` ile yazmayan önizlemeyi çalıştırıp planı inceleyin, sonra yalnız eksik dosyaları kurmak için `--apply` ekleyin. Aynı `--root` ile Doctor çalıştırın; ancak geçerse gerçek taramaya başlayın. `ADOPTED/0` ve Doctor `PASS/0`, kurulum sonuçlarıdır; temiz tarama kanıtı değildir.
+
+#### Skill ve protokolü güncelleme
+
+Bu deponun istediğiniz sürümünü alın ve `.agents/skills/coding-security-protocol/` klasörünün tamamını her istemcinin skill dizinine ayrı ayrı kopyalayın. İstemci güncel skill'i algılamazsa yeniden yükleyin veya başlatın. Bir istemciyi güncellemek diğerlerini güncellemez. CLI checkout'unu ayrıca güncelleyin; skill yenilemesi CLI'ı veya tarayıcı binary'lerini güncellemez. CLI, bağımlılık, tarayıcı veya proje config'i değişince Doctor'ı ve değişikliğin gerektirdiği kontrolleri çalıştırın.
+
+Benimsenmiş uygulama dosyaları için otomatik upgrade komutu yoktur. `security adopt` mevcut dosyaları korur ve çakışmaları bildirir; üzerine yazan bir güncelleme aracı değildir. Yeni şablonları uygulamanın config, policy ve sözleşmeleriyle karşılaştırın; değişiklikleri bilinçli biçimde gözden geçirip taşıyın, yerel bulgu/kanıtları koruyun, ardından Doctor, yapılandırılmış testler ve taramaları çalıştırın. Doctor PASS almak için proje policy veya config'ini bütünüyle değiştirmeyin.
 
 #### Gerektiğinde okunan ayrıntılı rehberler
 

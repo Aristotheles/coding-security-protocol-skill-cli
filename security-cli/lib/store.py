@@ -6,7 +6,7 @@ from pathlib import Path
 import re
 import tempfile
 
-from .doctor import connect_database, validate_finding_schema
+from .doctor import connect_database, database_schema_path, validate_finding_schema
 from .normalize import (ContractError, LEVELS, fingerprint, load_normalized, read_json,
                         safe_path, schema_validator)
 from .storage_io import atomic_json, store_lock
@@ -79,7 +79,7 @@ def write_index(root, findings):
         with tempfile.NamedTemporaryFile(dir=root / '.security', prefix='.index-', suffix='.db', delete=False) as stream:
             temp = Path(stream.name)
         connection = connect_database(temp)
-        sql = (root / 'security-cli/security-store.schema.sql').read_text(encoding='utf-8-sig')
+        sql = database_schema_path(root).read_text(encoding='utf-8-sig')
         connection.executescript('BEGIN IMMEDIATE;\n' + sql)
         for item in findings:
             connection.execute('INSERT INTO findings VALUES (?,?,?,?,?)',

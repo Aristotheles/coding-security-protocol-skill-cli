@@ -2,8 +2,10 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
+from pathlib import Path
 
-from tests.support import DoctorProject, doctor
+from tests.support import DoctorProject, REPOSITORY, create_application_project, doctor
 
 
 class DoctorAcceptance(DoctorProject):
@@ -48,7 +50,7 @@ class DoctorAcceptance(DoctorProject):
         human = self.invoke('doctor')
         machine = self.invoke('doctor', '--json')
         self.assertEqual(human.returncode, machine.returncode)
-        self.assertIn('Coding Security Protocol', human.stdout)
+        self.assertIn(self.root.name, human.stdout)
         self.assertIn('[PASS] sqlite_initialization', human.stdout)
         self.assertEqual(json.loads(machine.stdout)['exit_code'], 0)
 
@@ -85,6 +87,78 @@ class DoctorAcceptance(DoctorProject):
         elsewhere = self.root / 'other-project'
         elsewhere.mkdir()
         self.assertEqual(self.invoke('doctor', '--root', str(elsewhere), '--json').returncode, 30)
+
+    def test_external_application_root_without_vendored_cli(self):
+        with tempfile.TemporaryDirectory(prefix='csp-external-cli-test-') as temp:
+            root = create_application_project(Path(temp))
+            command = [sys.executable, str(REPOSITORY / 'security-cli/security'),
+                       'doctor', '--root', str(root), '--json']
+            result = subprocess.run(command, cwd=REPOSITORY, capture_output=True,
+                                    text=True, timeout=30, check=False)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual(report['project'], Path(temp).name)
+        self.assertEqual(report['result'], 'PASS')
+
+    def test_adopt_preview_and_apply_with_real_cli(self):
+        with tempfile.TemporaryDirectory(prefix='csp-adopt-cli-test-') as temp:
+            root = Path(temp)
+            cli = [sys.executable, str(REPOSITORY / 'security-cli/security')]
+            config = self.root / 'security.config.yml'
+            policy = self.root / '.security/policies/security-policy.yml'
+            preview = subprocess.run(cli + ['adopt', '--root', str(root), '--config', str(config),
+                                            '--policy', str(policy), '--json'], cwd=self.root,
+                                     capture_output=True, text=True, timeout=30, check=False)
+            self.assertEqual(preview.returncode, 20, preview.stdout + preview.stderr)
+            self.assertFalse((root / 'security.config.yml').exists())
+            applied = subprocess.run(cli + ['adopt', '--root', str(root), '--config', str(config),
+                                             '--policy', str(policy), '--apply', '--json'], cwd=self.root,
+                                    capture_output=True, text=True, timeout=30, check=False)
+            self.assertEqual(applied.returncode, 0, applied.stdout + applied.stderr)
+            self.assertEqual(json.loads(applied.stdout)['result'], 'ADOPTED')
+            doctor = subprocess.run(cli + ['doctor', '--root', str(root), '--json'], cwd=self.root,
+                                    capture_output=True, text=True, timeout=30, check=False)
+            self.assertEqual(doctor.returncode, 0, doctor.stdout + doctor.stderr)
+            self.assertEqual(json.loads(doctor.stdout)['result'], 'PASS')
+
+    def test_adopt_conflict_and_invalid_config_fail_closed(self):
+        cli = [sys.executable, str(REPOSITORY / 'security-cli/security')]
+        config = self.root / 'security.config.yml'
+        policy_config = self.root / '.security/policies/security-policy.yml'
+        with tempfile.TemporaryDirectory(prefix='csp-adopt-conflict-test-') as temp:
+            root = Path(temp)
+            policy = root / '.security/policies/security-policy.yml'
+            policy.parent.mkdir(parents=True)
+            policy.write_text('preserve me\n', encoding='utf-8')
+            conflict = subprocess.run(cli + ['adopt', '--root', str(root), '--config', str(config),
+                                             '--policy', str(policy_config), '--apply', '--json'],
+                                     cwd=self.root, capture_output=True, text=True, timeout=30, check=False)
+            self.assertEqual(conflict.returncode, 20, conflict.stdout + conflict.stderr)
+            self.assertEqual(policy.read_text(encoding='utf-8'), 'preserve me\n')
+            self.assertFalse((root / 'security.config.yml').exists())
+
+        with tempfile.TemporaryDirectory(prefix='csp-adopt-invalid-test-') as temp:
+            root = Path(temp) / 'application'
+            root.mkdir()
+            invalid = Path(temp) / 'invalid.yml'
+            invalid.write_text('version: 1\nscanners: {}\n', encoding='utf-8')
+            result = subprocess.run(cli + ['adopt', '--root', str(root), '--config', str(invalid),
+                                            '--policy', str(policy_config), '--json'],
+                                    cwd=self.root, capture_output=True, text=True, timeout=30, check=False)
+            self.assertEqual(result.returncode, 30, result.stdout + result.stderr)
+            self.assertEqual(json.loads(result.stdout)['result'], 'CONFIG_ERROR')
+            self.assertEqual(list(root.iterdir()), [])
+
+    def test_adopt_requires_explicit_root_without_writes(self):
+        cli = [sys.executable, str(REPOSITORY / 'security-cli/security')]
+        config = self.root / 'security.config.yml'
+        policy = self.root / '.security/policies/security-policy.yml'
+        with tempfile.TemporaryDirectory(prefix='csp-adopt-root-test-') as temp:
+            root = Path(temp)
+            result = subprocess.run(cli + ['adopt', '--config', str(config), '--policy', str(policy), '--json'],
+                                    cwd=root, capture_output=True, text=True, timeout=30, check=False)
+            self.assertEqual(result.returncode, 30, result.stdout + result.stderr)
+            self.assertEqual(list(root.iterdir()), [])
 
     def test_concurrent_initialization(self):
         processes = [subprocess.Popen(self.command('doctor', '--json'), cwd=self.root,
